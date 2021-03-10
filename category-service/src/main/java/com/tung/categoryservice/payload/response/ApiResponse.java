@@ -2,14 +2,14 @@ package com.tung.categoryservice.payload.response;
 
 public class ApiResponse {
     private Boolean success;
-    private String message;
+    private Object message;
 
     // ---- Constructor ----
 
     public ApiResponse() {
     }
 
-    public ApiResponse(Boolean success, String message) {
+    public ApiResponse(Boolean success, Object message) {
         this.success = success;
         this.message = message;
     }
@@ -24,11 +24,11 @@ public class ApiResponse {
         this.success = success;
     }
 
-    public String getMessage() {
+    public Object getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(Object message) {
         this.message = message;
     }
 }

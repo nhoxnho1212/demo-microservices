@@ -3,6 +3,7 @@ package com.tung.categoryservice.model.repository.impl;
 import com.tung.categoryservice.model.entity.Category;
 import com.tung.categoryservice.model.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,16 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public Category findById(long id) {
-        return null;
+        String sql = String.format("SELECT id, name FROM demo_microservice.category WHERE id=%d;", id);
+        Category category;
+        try {
+            category = jdbcTemplate.queryForObject(sql,
+                    new BeanPropertyRowMapper<>(Category.class)
+            );
+        } catch (EmptyResultDataAccessException exception) {
+           return null;
+        }
+        return category;
     }
 
 }
