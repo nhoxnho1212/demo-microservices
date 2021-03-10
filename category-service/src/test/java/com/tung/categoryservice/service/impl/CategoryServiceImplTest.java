@@ -52,6 +52,7 @@ class CategoryServiceImplTest {
         for (int idx = 0; idx < cateSize; idx ++) {
             assertEquals(result.get(idx), categoryList.get(idx));
         }
+        verify(categoryRepository, times(1)).findAll();
     }
 
     @Test
@@ -62,6 +63,7 @@ class CategoryServiceImplTest {
 
         assertNotNull(result);
         assertEquals(result.size(), 0);
+        verify(categoryRepository, times(1)).findAll();
     }
 
     @Test
@@ -73,6 +75,7 @@ class CategoryServiceImplTest {
         assertNotNull(result);
         assertEquals(category.getId(), result.getId());
         assertEquals(category.getName(), result.getName());
+        verify(categoryRepository, times(1)).findById(anyLong());
     }
 
     @Test
@@ -84,5 +87,7 @@ class CategoryServiceImplTest {
                     categoryService.findById(category.getId());
                 }
         );
+
+        verify(categoryRepository, times(1)).findById(anyLong());
     }
 }
