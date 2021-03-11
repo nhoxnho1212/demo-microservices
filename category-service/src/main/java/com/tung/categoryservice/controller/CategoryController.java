@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/category")
 public class CategoryController {
@@ -31,6 +34,22 @@ public class CategoryController {
         BeanUtils.copyProperties(category, categoryResponse);
 
         ApiResponse response = new ApiResponse(Boolean.TRUE, category);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse> getAllCategories() {
+        List<CategoryResponse> listCategoriesResponse = new ArrayList<>();
+
+        List<Category> listCategories = categoryService.findAll();
+
+        for (Category category : listCategories) {
+            CategoryResponse categoryResponse = new CategoryResponse();
+            BeanUtils.copyProperties(category, categoryResponse);
+            listCategoriesResponse.add(categoryResponse);
+        }
+
+        ApiResponse response = new ApiResponse(Boolean.TRUE, listCategoriesResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
