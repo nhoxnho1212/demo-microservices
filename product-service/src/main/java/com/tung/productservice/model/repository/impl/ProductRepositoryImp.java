@@ -58,8 +58,8 @@ public class ProductRepositoryImp implements ProductRepository {
         List<Product> result;
 
         try {
-            result =  jdbcTemplate.queryForList(sql,
-                    Product.class);
+            result =  jdbcTemplate.query(sql,
+                    new BeanPropertyRowMapper<>(Product.class));
         }
         // Has any problem executing the query
         catch (DataAccessException exception) {

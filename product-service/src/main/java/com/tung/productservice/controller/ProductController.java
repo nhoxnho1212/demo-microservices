@@ -10,10 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/product")
@@ -38,4 +38,32 @@ public class ProductController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    @GetMapping(
+            path = "/search"
+    )
+    public ResponseEntity<ApiResponse> getProductsByName(@RequestParam(name = "name") String name) {
+        Set<Product> result = new HashSet<>();
+        if ( name == null) {
+            result = new HashSet<>(productService.findAll());
+        } else {
+            name = name.trim();
+            Set<String> nameSearch = new HashSet<>(Arrays.asList(name.split("\\s+")));
+            for (String n : nameSearch) {
+                result.addAll(productService.findByName(n));
+            }
+        }
+
+        List<ProductResponse> productResponseList = new ArrayList<>();
+
+        for (Product product : result) {
+            ProductResponse productResponse = new ProductResponse();
+            BeanUtils.copyProperties(product, productResponse);
+            productResponseList.add(productResponse);
+        }
+
+        ApiResponse response = new ApiResponse(Boolean.TRUE, productResponseList);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
