@@ -57,4 +57,15 @@ class ProductServiceImplTest {
 
         Mockito.verify(productRepository, Mockito.times(1)).findAll();
     }
+
+    @Test
+    void testFindAll_NotAnyProducts() {
+        Mockito.when(productRepository.findAll()).thenReturn(null);
+
+        List<Product> result = productService.findAll();
+
+        assertNotNull(result);
+        assertEquals(result.size(), 0);
+        Mockito.verify(productRepository, Mockito.times(1)).findAll();
+    }
 }
