@@ -47,7 +47,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void getAllProducts() {
+    void testGetAllProducts_shouldYieldListOfProducts_forNoneEmptyProduct() {
         when(productService.findAll()).thenReturn(productList);
 
         ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
@@ -72,5 +72,23 @@ class ProductControllerTest {
         }
 
         verify(productService,times(1)).findAll();
+    }
+
+    @Test
+    void testGetAllProducts_shouldYieldEmptyList_forEmptyProduct() {
+        List<Product> listEmptyProduct = new ArrayList<>();
+        when(productService.findAll()).thenReturn(listEmptyProduct);
+
+        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, listEmptyProduct);
+        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        ResponseEntity result = productController.getAllProducts();
+        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
+        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
+
+        assertNotNull(resultApiResponse.getMessage());
+        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
+        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
+        assertEquals(resultListProductsResponse.size(), 0);
     }
 }
