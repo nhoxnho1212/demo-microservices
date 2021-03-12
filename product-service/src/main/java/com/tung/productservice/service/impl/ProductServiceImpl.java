@@ -25,7 +25,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByName(String name) {
-        return null;
+    public List<Product> findByName(final String name) {
+        List<Product> result = productRepository.findByName(name);
+
+        if (null == result) {
+            result = new ArrayList<>();
+        }
+        return result;
     }
 }
