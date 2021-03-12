@@ -1,6 +1,5 @@
 package com.tung.productservice.service.impl;
 
-import com.tung.productservice.model.entity.Category;
 import com.tung.productservice.model.entity.Product;
 import com.tung.productservice.model.repository.ProductRepository;
 import com.tung.productservice.service.ProductService;
@@ -27,13 +26,13 @@ class ProductServiceImplTest {
     private ProductRepository productRepository;
 
     List<Product> productList;
-    Product productSofm = new Product(1, "name Sofm TEST ONE TWO THREE", 100000.0, new Category("CATETEST1", "cat name TEST1"));
-    Product productLevi = new Product(2, "TWO THREE name Levi TEST ", 200000.0, new Category("CATETEST1", "cat name TEST1"));
-    Product productCanyon = new Product(3, "name Cayon THREE TEST", 300000.0, new Category("CATETEST2", "cat name TEST2"));
-    final String NAME_OF_THREE_PRODUCTS = "THREE";
-    final String NAME_OF_TWO_PRODUCTS = "TWO";
-    final String NAME_OF_ONE_PRODUCT = "ONE";
-    final String NAME_OF_NONE_PRODUCT = "NONE";
+    Product productSofm = new Product(1, "name Sofm TEST ONE TWO THREE", 100000.0, "CATETEST1");
+    Product productLevi = new Product(2, "TWO THREE name Levi TEST ", 200000.0,"CATETEST1");
+    Product productCanyon = new Product(3, "name Canyon THREE TEST", 300000.0, "CATETEST2");
+    final java.lang.String NAME_OF_THREE_PRODUCTS = "THREE";
+    final java.lang.String NAME_OF_TWO_PRODUCTS = "TWO";
+    final java.lang.String NAME_OF_ONE_PRODUCT = "ONE";
+    final java.lang.String NAME_OF_NONE_PRODUCT = "NONE";
 
     @BeforeEach
     void setUp() {
@@ -55,8 +54,7 @@ class ProductServiceImplTest {
             assertEquals(result.get(idx).getId(), productList.get(idx).getId());
             assertEquals(result.get(idx).getName(), productList.get(idx).getName());
             assertEquals(result.get(idx).getPrice(), productList.get(idx).getPrice());
-            assertEquals(result.get(idx).getCategory().getId(), productList.get(idx).getCategory().getId());
-            assertEquals(result.get(idx).getCategory().getName(), productList.get(idx).getCategory().getName());
+            assertEquals(result.get(idx).getCategory(), productList.get(idx).getCategory());
         }
 
         Mockito.verify(productRepository, Mockito.times(1)).findAll();
