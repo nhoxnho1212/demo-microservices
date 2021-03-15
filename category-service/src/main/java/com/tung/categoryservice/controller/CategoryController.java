@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/category")
+@RequestMapping(value = "${category-service.api.url.main:/category}")
 public class CategoryController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class CategoryController {
     @GetMapping(
             path = "/{categoryId}"
     )
-    public ResponseEntity<ApiResponse> getCategoryById(@PathVariable final long categoryId) {
+    public ResponseEntity<ApiResponse> getCategoryById(@PathVariable final String categoryId) {
         CategoryResponse categoryResponse = new CategoryResponse();
 
         Category category = categoryService.findById(categoryId);
