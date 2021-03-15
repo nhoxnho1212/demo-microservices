@@ -31,11 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(final long id) {
+    public Category findById(final String id) {
         Category returnValue = categoryRepository.findById(id);
 
         if (null == returnValue) {
-            logger.warn(String.format("Category id: %d not found", id));
+            logger.warn(String.format("Category id: %s not found", id));
             throw new CategoryServiceException(ErrorMessages.CATEGORY_NOT_FOUND.getMessage());
         }
 
