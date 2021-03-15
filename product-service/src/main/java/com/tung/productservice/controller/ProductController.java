@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "/product")
+@RequestMapping(value = "${product-service.api.url.main:/product}")
 public class ProductController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping(
-            path = "/search"
+            path = "${product-service.api.url.search:/search}"
     )
     public ResponseEntity<ApiResponse> getProductsByName(@RequestParam(name = "name") String name) {
         Set<Product> result = new HashSet<>();
