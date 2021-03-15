@@ -33,11 +33,11 @@ class CategoryServiceImplTest {
     @BeforeEach
     void setUp() {
         categoryList = new ArrayList<>();
-        categoryList.add(new Category(1L, "catTEST 1"));
-        categoryList.add(new Category(2L, "catTEST 2"));
-        categoryList.add(new Category(3L, "catTEST 3"));
+        categoryList.add(new Category("CATETEST1", "catTEST 1"));
+        categoryList.add(new Category("CATETEST2", "catTEST 2"));
+        categoryList.add(new Category("CATETEST3", "catTEST 3"));
 
-        category = new Category(4L, "catTEST 4");
+        category = new Category("CATETEST4", "catTEST 4");
     }
 
     @Test
@@ -68,19 +68,19 @@ class CategoryServiceImplTest {
 
     @Test
     void testFindById() {
-        when(categoryRepository.findById(anyLong())).thenReturn(category);
+        when(categoryRepository.findById(anyString())).thenReturn(category);
 
         Category result = categoryService.findById(category.getId());
 
         assertNotNull(result);
         assertEquals(category.getId(), result.getId());
         assertEquals(category.getName(), result.getName());
-        verify(categoryRepository, times(1)).findById(anyLong());
+        verify(categoryRepository, times(1)).findById(anyString());
     }
 
     @Test
     void  testFindById_CategoryIdException() {
-        when(categoryRepository.findById(anyLong())).thenReturn(null);
+        when(categoryRepository.findById(anyString())).thenReturn(null);
 
         assertThrows(CategoryServiceException.class,
                 () -> {
@@ -88,6 +88,6 @@ class CategoryServiceImplTest {
                 }
         );
 
-        verify(categoryRepository, times(1)).findById(anyLong());
+        verify(categoryRepository, times(1)).findById(anyString());
     }
 }

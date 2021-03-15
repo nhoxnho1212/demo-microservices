@@ -30,7 +30,7 @@ class CategoryControllerTest {
     @Mock
     CategoryService categoryService;
 
-    private long categoryId = 1L;
+    private String categoryId = "CATETEST1";
     private String name = "catTEST 1";
     private Category category;
     List<Category> listCategories;
@@ -39,14 +39,14 @@ class CategoryControllerTest {
     void setUp() {
         category = new Category(categoryId, name);
         listCategories = new ArrayList<>();
-        listCategories.add(new Category(1L, "catTEST 1"));
-        listCategories.add(new Category(2L, "catTEST 3"));
-        listCategories.add(new Category(3L, "catTEST 4"));
+        listCategories.add(new Category("CATETEST1", "catTEST 1"));
+        listCategories.add(new Category("CATETEST2", "catTEST 3"));
+        listCategories.add(new Category("CATETEST3", "catTEST 4"));
     }
 
     @Test
     void testGetCategoryById() {
-        when(categoryService.findById(anyLong())).thenReturn(category);
+        when(categoryService.findById(anyString())).thenReturn(category);
 
         ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, category);
         ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
@@ -58,7 +58,7 @@ class CategoryControllerTest {
         assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
         assertEquals(resultApiResponse.isSuccess(), apiResponse.isSuccess());
         assertEquals(resultApiResponse.getMessage(), apiResponse.getMessage());
-        verify(categoryService, times(1)).findById(anyLong());
+        verify(categoryService, times(1)).findById(anyString());
 
     }
 

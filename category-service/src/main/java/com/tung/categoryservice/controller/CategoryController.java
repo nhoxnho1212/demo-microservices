@@ -26,7 +26,7 @@ public class CategoryController {
     @GetMapping(
             path = "/{categoryId}"
     )
-    public ResponseEntity<ApiResponse> getCategoryById(@PathVariable final long categoryId) {
+    public ResponseEntity<ApiResponse> getCategoryById(@PathVariable final String categoryId) {
         CategoryResponse categoryResponse = new CategoryResponse();
 
         Category category = categoryService.findById(categoryId);
