@@ -37,7 +37,7 @@ $(document).ready(function () {
             }
         ],
         ajax: {
-            url: '/product1?name=',
+            url: '/product-api?name=',
             dataSrc: 'message',
         },
         columns: [
@@ -71,7 +71,7 @@ $(document).ready(function () {
     );
 
     $("#btnSearchProduct").click(function () {
-        var url = '/product1?name=' + $("#inputSearchProduct").val();
+        var url = '/product-api?name=' + $("#inputSearchProduct").val();
 
         tableProducts.ajax.url(url).load();
         data = tableProducts.rows.data;
