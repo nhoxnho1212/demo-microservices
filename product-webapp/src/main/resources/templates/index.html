@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+            rel="stylesheet"
+            th:href="@{/lib/bootstrap/css/bootstrap.min.css}"
+    />
+    <!-- Font awesome -->
+    <link
+            rel="stylesheet"
+            th:href="@{/lib/font-awesome/css/all.css}"
+    />
+
+    <!-- Reset css -->
+    <link
+            rel="stylesheet"
+            th:href="@{/lib/normalize/normalize.css}"
+    />
+
+    <!-- Select2 -->
+    <link th:href="@{/lib/select2/css/select2.min.css}" rel="stylesheet"/>
+
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" th:href="@{/lib/dataTable/datatables.min.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/lib/toastr/toastr.min.css}"/>
+
+
+
+
+    <link rel="stylesheet" href="./css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<!-- ==================== Begin Header ==================== -->
+<header id="header">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand">App</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- <form class="form-inline"> -->
+
+            <div class="form-group d-inline-flex">
+                <input type="text" placeholder="Search a product" id="inputSearchProduct" class="form-control mx-2">
+                <button class="btn btn-primary my-2 my-sm-0 ml-2" id="btnSearchProduct">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <!-- </form> -->
+            <ul class="btn-order">
+                <button class="btn btn-shopping-cart">
+                    <i class="fa fa-shopping-cart"></i>
+                </button>
+                <span id="cartCount" class="badge badge-pill badge-danger label-cart-count"
+                >0</span
+                >
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- ==================== End Header// ==================== -->
+
+<!-- ==================== Begin Main ==================== -->
+
+<main id="main">
+
+    <section class="section-pagetop">
+        <div class="container">
+            <h2>Products</h2>
+        </div>
+    </section>
+
+    <!-- ==================== Begin Section content ==================== -->
+
+    <section class="section-content padding-y">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Category</h5>
+                        </div>
+                        <!--        Category dropbox           -->
+                        <div class="card-body">
+                            <select class="form-control" multiple="multiple" id="selectCategory" data-placeholder="All">
+                                <option th:selected="${null}" th:each="category : ${categoryList}"
+                                        th:value="${category.getId()}" th:text="${category.getName()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9" th:fragment="tableProducts" id="allTableProducts">
+
+                    <!-- List products -->
+
+                    <div>
+                        <!--      Data table products      -->
+                        <table id="tableProducts" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>CategoryId</th>
+                                <th class="table-column__no-sort"></th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-products">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== End Section content// ==================== -->
+
+
+</main>
+
+<div id="modalAddCartContent" style="display: none;">
+    <div>
+        <!--      Data table products Order     -->
+        <table id="tableProductsOrder" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>CategoryId</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody class="table-products">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-end my-3">
+        <span class="mx-2"><b>Total: </b></span> <span id="txtTotalPrice"></span>
+    </div>
+</div>
+
+<!-- ==================== End Main// ==================== -->
+
+<!-- ==================== Begin Footer ==================== -->
+<footer id="footer">
+    <!-- Copyright -->
+    <div
+            class="text-center p-4"
+            style="background-color: #fff; color: #b9b9b9"
+    >
+        © 2021 Copyright
+    </div>
+    <!-- Copyright -->
+</footer>
+<!-- ==================== End Footer// ==================== -->
+
+<!-- Optional JavaScript -->
+
+<!--  Bootstrap  -->
+<script
+        th:src="@{/lib/bootstrap/js/bootstrap.min.js}"
+></script>
+
+<!-- Jquery -->
+<script src="./lib/jquery/jquery-3.6.0.js" th:src="@{/lib/jquery/jquery-3.6.0.js}"
+></script>
+
+<!-- Select2 -->
+<script th:src="@{/lib/select2/js/select2.min.js}"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" th:src="@{/lib/dataTable/jquery.dataTables.js}"></script>
+
+<!-- Bootbox -->
+<script th:src="@{/lib/bootbox/bootbox.all.min.js}"></script>
+
+<!-- Toastr -->
+<script th:src="@{/lib/toastr/toastr.min.js}"></script>
+
+<script th:inline="javascript" >
+    /*<![CDATA[*/
+
+    var productServiceUri = [[${productServiceUri}]];
+
+    /*]]>*/
+</script>
+
+<script src="./js/main.js" th:src="@{/js/main.js}"></script>
+
+</body>
+</html>
