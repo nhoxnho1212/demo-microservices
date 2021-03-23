@@ -8,6 +8,7 @@ import com.tung.productwebapp.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     Environment environment;
 
+    @Value("${category-service.api.uri:}")
+    private String categoryUri;
+
     @Autowired
     RestTemplate restTemplate;
 
@@ -33,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categoryList = new ArrayList<>();
         try {
             ResponseEntity<ApiRequest> response = restTemplate.getForEntity(
-                    environment.getProperty("category-service.api.uri"),
+                    categoryUri,
                     ApiRequest.class
             );
             ApiRequest apiRequestCategory = response.getBody();

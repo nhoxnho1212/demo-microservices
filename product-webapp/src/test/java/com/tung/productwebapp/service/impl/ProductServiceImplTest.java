@@ -34,10 +34,6 @@ class ProductServiceImplTest {
     private ProductService productService = new ProductServiceImpl();
 
     @Mock
-    @Autowired
-    Environment environment;
-
-    @Mock
     CategoryService categoryService = new CategoryServiceImpl();
 
     @Mock
@@ -85,7 +81,6 @@ class ProductServiceImplTest {
 
     @Test
     void testGetByName_getAllProducts() {
-        when(environment.getProperty(anyString())).thenReturn("");
         when(categoryService.getAll()).thenReturn(categoryList);
         ApiRequest apiResponse = new ApiRequest(Boolean.TRUE, productRequestList);
         ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
@@ -108,7 +103,6 @@ class ProductServiceImplTest {
 
     @Test
     void testFindByName_shouldYieldEmptyList_forAnyProductsNotBeMatch() {
-        when(environment.getProperty(anyString())).thenReturn("");
         List<Map<String, Object>> emptyProductListRequest = new ArrayList<>();
         when(categoryService.getAll()).thenReturn(categoryList);
         ApiRequest apiResponse = new ApiRequest(Boolean.TRUE, emptyProductListRequest);
@@ -125,7 +119,6 @@ class ProductServiceImplTest {
 
     @Test
     void testGetAll_RestClientException() {
-        when(environment.getProperty(anyString())).thenReturn("");
         when(restTemplate.getForEntity(anyString(), any())).thenThrow(RestClientException.class);
         when(categoryService.getAll()).thenReturn(categoryList);
 

@@ -29,10 +29,6 @@ class CategoryServiceImplTest {
     @Mock
     private RestTemplate restTemplate = new RestTemplate();
 
-    @Mock
-    @Autowired
-    Environment environment;
-
     List<Category> categoryList;
     Category category;
 
@@ -50,7 +46,6 @@ class CategoryServiceImplTest {
     void testGetAll() {
         ApiRequest apiResponse = new ApiRequest(Boolean.TRUE, categoryList);
         ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
-        when(environment.getProperty(anyString())).thenReturn("");
         when(restTemplate.getForEntity(anyString(), any())).thenReturn(responseEntity);
 
         List<Category> result = categoryService.getAll();
@@ -71,7 +66,6 @@ class CategoryServiceImplTest {
         List<Category> listEmptyCategory = new ArrayList<>();
         ApiRequest apiResponse = new ApiRequest(Boolean.TRUE, listEmptyCategory);
         ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
-        when(environment.getProperty(anyString())).thenReturn("");
         when(restTemplate.getForEntity(anyString(), any())).thenReturn(responseEntity);
 
         List<Category> result = categoryService.getAll();
@@ -85,7 +79,6 @@ class CategoryServiceImplTest {
     void testGetAll_ApiRequestNotSuccess() {
         ApiRequest apiResponse = new ApiRequest(Boolean.FALSE, null);
         ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
-        when(environment.getProperty(anyString())).thenReturn("");
         when(restTemplate.getForEntity(anyString(), any())).thenReturn(responseEntity);
 
         List<Category> result = categoryService.getAll();
@@ -97,7 +90,6 @@ class CategoryServiceImplTest {
 
     @Test
     void testGetAll_RestClientException() {
-        when(environment.getProperty(anyString())).thenReturn("");
         when(restTemplate.getForEntity(anyString(), any())).thenThrow(RestClientException.class);
 
         List<Category> result = categoryService.getAll();

@@ -5,7 +5,6 @@ import com.tung.productwebapp.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,9 +16,6 @@ public class MainController {
 
     @Autowired
     CategoryService categoryService;
-
-    @Autowired
-    Environment environment;
 
     Logger logger = LoggerFactory.getLogger(MainController.class);
 
