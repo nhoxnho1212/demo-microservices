@@ -41,7 +41,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public Category findById(String id) {
-        String sql = String.format("SELECT id, name FROM demo_microservice.category WHERE id LIKE '%s';", id);
+        String sql = String.format("SELECT id, name FROM demo_microservice.category WHERE id = '%s';", id);
         Category category;
         try {
             category = jdbcTemplate.queryForObject(sql,
