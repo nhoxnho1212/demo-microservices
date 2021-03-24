@@ -1,6 +1,6 @@
 package com.tung.productservice.controller;
 
-import com.tung.productservice.model.entity.Product;
+import com.tung.productservice.dto.ProductDto;
 import com.tung.productservice.payload.response.ApiResponse;
 import com.tung.productservice.payload.response.ProductResponse;
 import com.tung.productservice.service.ProductService;
@@ -24,11 +24,11 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllProducts() {
-        List<Product> result = productService.findAll();
+        List<ProductDto> result = productService.findAll();
 
         List<ProductResponse> productResponseList = new ArrayList<>();
 
-        for (Product product : result) {
+        for (ProductDto product : result) {
             ProductResponse productResponse = new ProductResponse();
             BeanUtils.copyProperties(product, productResponse);
             productResponseList.add(productResponse);
@@ -42,7 +42,7 @@ public class ProductController {
             path = "${product-service.api.url.search:/search}"
     )
     public ResponseEntity<ApiResponse> getProductsByName(@RequestParam(name = "name") String name) {
-        Set<Product> result = new HashSet<>();
+        Set<ProductDto> result = new HashSet<>();
         if ( name == null) {
             result = new HashSet<>(productService.findAll());
         } else {
@@ -55,7 +55,7 @@ public class ProductController {
 
         List<ProductResponse> productResponseList = new ArrayList<>();
 
-        for (Product product : result) {
+        for (ProductDto product : result) {
             ProductResponse productResponse = new ProductResponse();
             BeanUtils.copyProperties(product, productResponse);
             productResponseList.add(productResponse);

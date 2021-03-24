@@ -1,9 +1,10 @@
 package com.tung.productservice.service;
 
-import com.tung.productservice.model.entity.Product;
+import com.tung.productservice.dto.ProductDto;
+
 import java.util.List;
 
 public interface ProductService {
-    List<Product> findAll();
-    List<Product> findByName(final String name);
+    List<ProductDto> findAll();
+    List<ProductDto> findByName(final String name);
 }

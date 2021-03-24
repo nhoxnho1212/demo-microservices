@@ -1,7 +1,7 @@
 package com.tung.productservice.service.impl;
 
-import com.tung.productservice.model.entity.Product;
-import com.tung.productservice.model.repository.ProductRepository;
+import com.tung.productservice.dto.ProductDto;
+import com.tung.productservice.dao.ProductDao;
 import com.tung.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDao productDao;
 
     @Override
-    public List<Product> findAll() {
-        List<Product> result = productRepository.findAll();
+    public List<ProductDto> findAll() {
+        List<ProductDto> result = productDao.findAll();
 
         if (null == result) {
             result = new ArrayList<>();
@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByName(final String name) {
-        List<Product> result = productRepository.findByName(name);
+    public List<ProductDto> findByName(final String name) {
+        List<ProductDto> result = productDao.findByName(name);
 
         if (null == result) {
             result = new ArrayList<>();

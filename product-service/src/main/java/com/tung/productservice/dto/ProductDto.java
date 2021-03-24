@@ -1,21 +1,21 @@
-package com.tung.productservice.model.entity;
+package com.tung.productservice.dto;
 
-public class Product {
+public class ProductDto {
     private int id;
     private String name;
     private Double price;
     private String category;
 
-    public Product() {
+    public ProductDto() {
     }
 
-    public Product(String name, Double price, String category) {
+    public ProductDto(String name, Double price, String category) {
         this.name = name;
         this.price = price;
         this.category = category;
     }
 
-    public Product(int id, String name, Double price, String category) {
+    public ProductDto(int id, String name, Double price, String category) {
         this.id = id;
         this.name = name;
         this.price = price;

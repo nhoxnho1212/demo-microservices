@@ -1,6 +1,6 @@
 package com.tung.productservice.controller;
 
-import com.tung.productservice.model.entity.Product;
+import com.tung.productservice.dto.ProductDto;
 import com.tung.productservice.payload.response.ApiResponse;
 import com.tung.productservice.payload.response.ProductResponse;
 import com.tung.productservice.service.ProductService;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class ProductControllerTest {
+class ProductDtoControllerTest {
 
     @InjectMocks
     ProductController productController;
@@ -30,10 +29,10 @@ class ProductControllerTest {
     @Mock
     ProductService productService = new ProductServiceImpl();
 
-    List<Product> productList;
-    Product productSofm = new Product(1, "ONCE TWICE 1", 100000.0, "CATETEST1");
-    Product productLevi = new Product(2, "TWICE 2", 200000.0,"CATETEST1");
-    Product productCanyon = new Product(3, "test case", 300000.0, "CATETEST2");
+    List<ProductDto> productList;
+    ProductDto productSofm = new ProductDto(1, "ONCE TWICE 1", 100000.0, "CATETEST1");
+    ProductDto productLevi = new ProductDto(2, "TWICE 2", 200000.0,"CATETEST1");
+    ProductDto productCanyon = new ProductDto(3, "test case", 300000.0, "CATETEST2");
     final String NAME_OF_TWO_PRODUCTS = "TWICE";
     final String NAME_OF_ONE_PRODUCT = "ONCE";
     final String NAME_OF_NONE_PRODUCT = "NONE";
@@ -76,7 +75,7 @@ class ProductControllerTest {
 
     @Test
     void testGetAllProducts_shouldYieldEmptyList_forEmptyProduct() {
-        List<Product> listEmptyProduct = new ArrayList<>();
+        List<ProductDto> listEmptyProduct = new ArrayList<>();
         when(productService.findAll()).thenReturn(listEmptyProduct);
 
         ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, listEmptyProduct);
@@ -110,7 +109,7 @@ class ProductControllerTest {
 
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
-            Product resultProduct = productList.stream()
+            ProductDto resultProduct = productList.stream()
                     .filter(product -> resultProductResponse.getId() == product.getId())
                     .findAny()
                     .orElse(null);
@@ -141,7 +140,7 @@ class ProductControllerTest {
 
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
-            Product resultProduct = productList.stream()
+            ProductDto resultProduct = productList.stream()
                     .filter(product -> resultProductResponse.getId() == product.getId())
                     .findAny()
                     .orElse(null);
@@ -203,7 +202,7 @@ class ProductControllerTest {
 
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
-            Product resultProduct = productList.stream()
+            ProductDto resultProduct = productList.stream()
                     .filter(product -> resultProductResponse.getId() == product.getId())
                     .findAny()
                     .orElse(null);
@@ -239,7 +238,7 @@ class ProductControllerTest {
 
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
-            Product resultProduct = productList.stream()
+            ProductDto resultProduct = productList.stream()
                     .filter(product -> resultProductResponse.getId() == product.getId())
                     .findAny()
                     .orElse(null);
