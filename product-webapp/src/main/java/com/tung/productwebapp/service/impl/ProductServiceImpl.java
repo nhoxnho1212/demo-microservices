@@ -48,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
             List<LinkedHashMap> productListResponse = (List<LinkedHashMap>) apiRequestProduct.getMessage();
 
+            // ApiRequest.getSuccess() always return True if it don't throw RestClientException.
             if (apiRequestProduct != null && apiRequestProduct.getSuccess()) {
                 for (LinkedHashMap productRequest : productListResponse) {
                     Product product = new Product();

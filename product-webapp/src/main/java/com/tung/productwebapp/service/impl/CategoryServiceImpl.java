@@ -42,6 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
             );
             ApiRequest apiRequestCategory = response.getBody();
 
+            // ApiRequest.getSuccess() always return True if it don't throw RestClientException.
             if (apiRequestCategory.getSuccess()) {
                 ObjectMapper mapper = new ObjectMapper();
                 categoryList = mapper.convertValue(apiRequestCategory.getMessage(), new TypeReference<List<Category>>() {

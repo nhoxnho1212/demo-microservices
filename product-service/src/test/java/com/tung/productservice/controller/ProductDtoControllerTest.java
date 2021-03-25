@@ -27,7 +27,7 @@ class ProductDtoControllerTest {
     ProductController productController;
 
     @Mock
-    ProductService productService = new ProductServiceImpl();
+    ProductService productService;
 
     List<ProductDto> productList;
     ProductDto productSofm = new ProductDto(1, "ONCE TWICE 1", 100000.0, "CATETEST1");
