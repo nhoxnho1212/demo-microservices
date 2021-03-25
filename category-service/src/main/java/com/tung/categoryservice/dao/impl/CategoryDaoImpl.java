@@ -41,7 +41,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public CategoryDto findById(String id) {
-        String sql = String.format("SELECT id, name FROM demo_microservice.category WHERE id = '%s';", id);
+        String sql = String.format("SELECT id, name FROM category WHERE id = '%s';", id);
         CategoryDto categoryDto;
         try {
             categoryDto = jdbcTemplate.queryForObject(sql,

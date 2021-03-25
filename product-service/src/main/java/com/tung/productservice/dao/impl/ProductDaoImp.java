@@ -25,7 +25,7 @@ public class ProductDaoImp implements ProductDao {
     @Override
     public List<ProductDto> findAll() {
 
-        String sql = "SELECT id, name, price, category FROM demo_microservice.product ORDER BY id DESC;";
+        String sql = "SELECT id, name, price, category FROM product ORDER BY id DESC;";
 
         List<ProductDto> result;
 
@@ -46,7 +46,7 @@ public class ProductDaoImp implements ProductDao {
     public List<ProductDto> findByName(String name) {
         String searchPattern = "%" + name + "%";
         String sql = String.format("SELECT id, name, price, category " +
-                "FROM demo_microservice.product " +
+                "FROM product " +
                 "WHERE name like '%s';", searchPattern);
 
         List<ProductDto> result;
