@@ -21,16 +21,20 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    Environment environment;
-
-    @Value("${category-service.api.uri:}")
-    private String categoryUri;
-
-    @Autowired
     RestTemplate restTemplate;
 
     Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
+    @Value("${category-service.api.uri}")
+    private String categoryUri = new String();
+
+    @Autowired
+    public CategoryServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public CategoryServiceImpl() {
+    }
 
     @Override
     public List<Category> getAll() {

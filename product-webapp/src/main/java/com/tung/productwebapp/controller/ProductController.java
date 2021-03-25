@@ -19,13 +19,17 @@ import java.util.*;
 @Controller
 public class ProductController {
 
-    @Autowired
     RestTemplate restTemplate;
 
-    @Autowired
     ProductService productService;
 
     Logger logger = LoggerFactory.getLogger(ProductController.class);
+
+    @Autowired
+    public ProductController(RestTemplate restTemplate, ProductService productService) {
+        this.restTemplate = restTemplate;
+        this.productService = productService;
+    }
 
     @RequestMapping(value = "/product-api", method = RequestMethod.GET)
     public ResponseEntity<ApiRequest> getAllProductsApi(@RequestParam(name = "name") String name) {

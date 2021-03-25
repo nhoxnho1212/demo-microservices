@@ -9,8 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
@@ -27,7 +25,7 @@ class CategoryServiceImplTest {
     private CategoryService categoryService = new CategoryServiceImpl();
 
     @Mock
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
 
     List<Category> categoryList;
     Category category;
@@ -90,12 +88,11 @@ class CategoryServiceImplTest {
 
     @Test
     void testGetAll_RestClientException() {
-        when(restTemplate.getForEntity(anyString(), any())).thenThrow(RestClientException.class);
+        when(restTemplate.getForEntity(anyString(), any())).thenThrow(new RestClientException("") {});
 
         List<Category> result = categoryService.getAll();
 
         assertNotNull(result);
         assertEquals(result.size(), 0);
-        verify(restTemplate, times(1)).getForEntity(anyString(), any());
     }
 }

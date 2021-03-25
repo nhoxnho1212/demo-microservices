@@ -14,10 +14,15 @@ import java.util.*;
 @Controller
 public class MainController {
 
-    @Autowired
+    Logger logger = LoggerFactory.getLogger(MainController.class);
+
     CategoryService categoryService;
 
-    Logger logger = LoggerFactory.getLogger(MainController.class);
+    @Autowired
+    public MainController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
 
     @RequestMapping("/")
     public ModelAndView getIndexPage() {

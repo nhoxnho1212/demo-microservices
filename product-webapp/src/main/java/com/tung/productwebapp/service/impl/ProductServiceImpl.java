@@ -22,16 +22,23 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
     RestTemplate restTemplate;
 
-    @Autowired
     CategoryService categoryService;
 
-    @Value("${product-service.api.uri}")
-    private String productServiceUri;
-
     Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+
+    @Value("${product-service.api.uri}")
+    private String productServiceUri = new String();
+
+    @Autowired
+    public ProductServiceImpl(RestTemplate restTemplate, CategoryService categoryService) {
+        this.restTemplate = restTemplate;
+        this.categoryService = categoryService;
+    }
+
+    public ProductServiceImpl() {
+    }
 
     @Override
     public List<Product> getByName(String name) {

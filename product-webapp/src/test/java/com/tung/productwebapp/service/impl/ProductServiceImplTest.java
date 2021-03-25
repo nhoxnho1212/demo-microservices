@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
@@ -34,7 +33,7 @@ class ProductServiceImplTest {
     private ProductService productService = new ProductServiceImpl();
 
     @Mock
-    CategoryService categoryService = new CategoryServiceImpl();
+    CategoryService categoryService;
 
     @Mock
     @Autowired
@@ -119,13 +118,12 @@ class ProductServiceImplTest {
 
     @Test
     void testGetAll_RestClientException() {
-        when(restTemplate.getForEntity(anyString(), any())).thenThrow(RestClientException.class);
         when(categoryService.getAll()).thenReturn(categoryList);
+        when(restTemplate.getForEntity(anyString(), any())).thenThrow(new RestClientException("") {});
 
-        List<Product> result = productService.getByName(anyString());
+        List<Product> result = productService.getByName("");
 
         assertNotNull(result);
         assertEquals(result.size(), 0);
-        verify(restTemplate, times(1)).getForEntity(anyString(), any());
     }
 }
