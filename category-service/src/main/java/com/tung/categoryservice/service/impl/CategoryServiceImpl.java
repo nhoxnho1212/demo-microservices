@@ -18,8 +18,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
-    @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    public CategoryServiceImpl(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
+
+    public CategoryServiceImpl() {
+    }
 
     @Override
     public List<CategoryDto> findAll() {

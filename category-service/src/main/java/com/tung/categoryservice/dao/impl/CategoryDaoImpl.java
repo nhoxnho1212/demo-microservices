@@ -20,8 +20,12 @@ public class CategoryDaoImpl implements CategoryDao {
 
     Logger logger = LoggerFactory.getLogger(CategoryDaoImpl.class);
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public CategoryDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<CategoryDto> findAll() {
         String sql ="SELECT id, name FROM category ORDER BY id DESC;";

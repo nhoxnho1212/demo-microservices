@@ -20,8 +20,12 @@ import java.util.List;
 @RequestMapping(value = "${category-service.api.url.main:/category}")
 public class CategoryController {
 
-    @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping(
             path = "/{categoryId}"
