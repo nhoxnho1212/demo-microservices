@@ -1,6 +1,6 @@
 package com.tung.categoryservice.controller;
 
-import com.tung.categoryservice.model.entity.Category;
+import com.tung.categoryservice.dto.CategoryDto;
 import com.tung.categoryservice.payload.response.ApiResponse;
 import com.tung.categoryservice.payload.response.CategoryResponse;
 import com.tung.categoryservice.service.CategoryService;
@@ -29,11 +29,11 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable final String categoryId) {
         CategoryResponse categoryResponse = new CategoryResponse();
 
-        Category category = categoryService.findById(categoryId);
+        CategoryDto categoryDto = categoryService.findById(categoryId);
 
-        BeanUtils.copyProperties(category, categoryResponse);
+        BeanUtils.copyProperties(categoryDto, categoryResponse);
 
-        ApiResponse response = new ApiResponse(Boolean.TRUE, category);
+        ApiResponse response = new ApiResponse(Boolean.TRUE, categoryDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -41,11 +41,11 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> getAllCategories() {
         List<CategoryResponse> listCategoriesResponse = new ArrayList<>();
 
-        List<Category> listCategories = categoryService.findAll();
+        List<CategoryDto> listCategories = categoryService.findAll();
 
-        for (Category category : listCategories) {
+        for (CategoryDto categoryDto : listCategories) {
             CategoryResponse categoryResponse = new CategoryResponse();
-            BeanUtils.copyProperties(category, categoryResponse);
+            BeanUtils.copyProperties(categoryDto, categoryResponse);
             listCategoriesResponse.add(categoryResponse);
         }
 

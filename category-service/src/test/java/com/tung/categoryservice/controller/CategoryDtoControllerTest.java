@@ -1,6 +1,6 @@
 package com.tung.categoryservice.controller;
 
-import com.tung.categoryservice.model.entity.Category;
+import com.tung.categoryservice.dto.CategoryDto;
 import com.tung.categoryservice.payload.response.ApiResponse;
 import com.tung.categoryservice.payload.response.CategoryResponse;
 import com.tung.categoryservice.service.CategoryService;
@@ -32,16 +32,16 @@ class CategoryControllerTest {
 
     private String categoryId = "CATETEST1";
     private String name = "catTEST 1";
-    private Category category;
-    List<Category> listCategories;
+    private CategoryDto category;
+    List<CategoryDto> listCategories;
 
     @BeforeEach
     void setUp() {
-        category = new Category(categoryId, name);
+        category = new CategoryDto(categoryId, name);
         listCategories = new ArrayList<>();
-        listCategories.add(new Category("CATETEST1", "catTEST 1"));
-        listCategories.add(new Category("CATETEST2", "catTEST 3"));
-        listCategories.add(new Category("CATETEST3", "catTEST 4"));
+        listCategories.add(new CategoryDto("CATETEST1", "catTEST 1"));
+        listCategories.add(new CategoryDto("CATETEST2", "catTEST 3"));
+        listCategories.add(new CategoryDto("CATETEST3", "catTEST 4"));
     }
 
     @Test

@@ -1,9 +1,9 @@
-package com.tung.categoryservice.model.repository.impl;
+package com.tung.categoryservice.dao.impl;
 
 import com.tung.categoryservice.config.constant.ErrorMessages;
+import com.tung.categoryservice.dao.CategoryDao;
 import com.tung.categoryservice.exception.DatabaseException;
-import com.tung.categoryservice.model.entity.Category;
-import com.tung.categoryservice.model.repository.CategoryRepository;
+import com.tung.categoryservice.dto.CategoryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +16,19 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CategoryRepositoryImpl implements CategoryRepository {
+public class CategoryDaoImpl implements CategoryDao {
 
-    Logger logger = LoggerFactory.getLogger(CategoryRepositoryImpl.class);
+    Logger logger = LoggerFactory.getLogger(CategoryDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Category> findAll() {
+    public List<CategoryDto> findAll() {
         String sql ="SELECT id, name FROM category ORDER BY id DESC;";
-        List<Category> result;
+        List<CategoryDto> result;
         try {
             result = jdbcTemplate.query(sql,
-                    new BeanPropertyRowMapper<>(Category.class));
+                    new BeanPropertyRowMapper<>(CategoryDto.class));
         }
         // Has any problem executing the query
         catch (DataAccessException exception) {
@@ -40,12 +40,12 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public Category findById(String id) {
+    public CategoryDto findById(String id) {
         String sql = String.format("SELECT id, name FROM demo_microservice.category WHERE id = '%s';", id);
-        Category category;
+        CategoryDto categoryDto;
         try {
-            category = jdbcTemplate.queryForObject(sql,
-                    new BeanPropertyRowMapper<>(Category.class)
+            categoryDto = jdbcTemplate.queryForObject(sql,
+                    new BeanPropertyRowMapper<>(CategoryDto.class)
             );
         }
         // Don't found any Category with id
@@ -57,7 +57,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             logger.error(exception.getMessage());
             throw new DatabaseException(ErrorMessages.DATABASE_HAS_A_PROBLEM.getMessage());
         }
-        return category;
+        return categoryDto;
     }
 
 }

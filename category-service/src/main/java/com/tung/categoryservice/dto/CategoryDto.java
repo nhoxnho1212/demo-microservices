@@ -1,17 +1,17 @@
-package com.tung.categoryservice.model.entity;
+package com.tung.categoryservice.dto;
 
 
 import java.util.Objects;
 
-public class Category{
+public class CategoryDto {
     private String id;
     private String name;
 
-    public Category() {
+    public CategoryDto() {
 
     }
 
-    public Category(String id, String name) {
+    public CategoryDto(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -20,8 +20,8 @@ public class Category{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return id == category.id && Objects.equals(name, category.name);
+        CategoryDto categoryDto = (CategoryDto) o;
+        return id == categoryDto.id && Objects.equals(name, categoryDto.name);
     }
 
     @Override

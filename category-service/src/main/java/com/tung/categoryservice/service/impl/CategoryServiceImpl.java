@@ -2,8 +2,8 @@ package com.tung.categoryservice.service.impl;
 
 import com.tung.categoryservice.config.constant.ErrorMessages;
 import com.tung.categoryservice.exception.CategoryServiceException;
-import com.tung.categoryservice.model.entity.Category;
-import com.tung.categoryservice.model.repository.CategoryRepository;
+import com.tung.categoryservice.dto.CategoryDto;
+import com.tung.categoryservice.dao.CategoryDao;
 import com.tung.categoryservice.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +19,11 @@ public class CategoryServiceImpl implements CategoryService {
     Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryDao categoryDao;
 
     @Override
-    public List<Category> findAll() {
-        List<Category> result = categoryRepository.findAll();
+    public List<CategoryDto> findAll() {
+        List<CategoryDto> result = categoryDao.findAll();
         if (null == result) {
             result = new ArrayList<>();
         }
@@ -31,8 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(final String id) {
-        Category returnValue = categoryRepository.findById(id);
+    public CategoryDto findById(final String id) {
+        CategoryDto returnValue = categoryDao.findById(id);
 
         if (null == returnValue) {
             logger.warn(String.format("Category id: %s not found", id));
