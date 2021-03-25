@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class CategoryDtoServiceImplTest {
+class CategoryServiceImplTest {
 
     @InjectMocks
     CategoryService categoryService = new CategoryServiceImpl();
