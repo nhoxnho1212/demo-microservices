@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductDtoServiceImplTest {
 
     @InjectMocks
-    private ProductService productService = new ProductServiceImpl();
+    private ProductService productService;
 
     @Mock
     private ProductDao productDao;

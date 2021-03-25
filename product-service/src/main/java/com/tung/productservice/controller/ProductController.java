@@ -19,8 +19,12 @@ import java.util.*;
 @RequestMapping(value = "${product-service.api.url.main:/product}")
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
+
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllProducts() {
@@ -38,6 +42,7 @@ public class ProductController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @GetMapping(
             path = "${product-service.api.url.search:/search}"
     )

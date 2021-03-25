@@ -19,8 +19,12 @@ public class ProductDaoImp implements ProductDao {
 
     Logger logger = LoggerFactory.getLogger(ProductDaoImp.class);
 
-    @Autowired
     public JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public ProductDaoImp(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<ProductDto> findAll() {
