@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class ProductDtoControllerTest {
+class ProductControllerTest {
 
     @InjectMocks
     ProductController productController;
@@ -49,18 +49,9 @@ class ProductDtoControllerTest {
     void testGetAllProducts_shouldYieldListOfProducts_forNoneEmptyProduct() {
         when(productService.findAll()).thenReturn(productList);
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        List<ProductResponse> resultListProductsResponse = productController.getAllProducts();
 
-        ResponseEntity result = productController.getAllProducts();
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
-
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
         assertEquals(resultListProductsResponse.size(), productList.size());
-
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProduct = resultListProductsResponse.get(idx);
 
@@ -69,7 +60,6 @@ class ProductDtoControllerTest {
             assertEquals(resultProduct.getPrice(), productList.get(idx).getPrice());
             assertEquals(resultProduct.getCategory(), productList.get(idx).getCategory());
         }
-
         verify(productService,times(1)).findAll();
     }
 
@@ -78,35 +68,19 @@ class ProductDtoControllerTest {
         List<ProductDto> listEmptyProduct = new ArrayList<>();
         when(productService.findAll()).thenReturn(listEmptyProduct);
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, listEmptyProduct);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        List<ProductResponse> resultListProductsResponse = productController.getAllProducts();
 
-        ResponseEntity result = productController.getAllProducts();
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
-
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
         assertEquals(resultListProductsResponse.size(), 0);
+        verify(productService,times(1)).findAll();
     }
 
     @Test
     void testGetProductsByName_shouldYieldListOfAllProducts_whenNameIsNull() {
         when(productService.findAll()).thenReturn(productList);
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        List<ProductResponse> resultListProductsResponse = productController.getProductsByName(null);
 
-        ResponseEntity result = productController.getProductsByName(null);
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
-
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
         assertEquals(resultListProductsResponse.size(), productList.size());
-
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
             ProductDto resultProduct = productList.stream()
@@ -118,7 +92,6 @@ class ProductDtoControllerTest {
             assertEquals(resultProduct.getPrice(), resultProductResponse.getPrice());
             assertEquals(resultProduct.getCategory(), resultProductResponse.getCategory());
         }
-
         verify(productService,times(1)).findAll();
     }
 
@@ -126,18 +99,9 @@ class ProductDtoControllerTest {
     void testGetProductsByName_shouldYieldListOfAllProducts_whenNameIsBlank() {
         when(productService.findByName(anyString())).thenReturn(productList);
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        List<ProductResponse> resultListProductsResponse = productController.getProductsByName("  ");
 
-        ResponseEntity result = productController.getProductsByName("  ");
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
-
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
         assertEquals(resultListProductsResponse.size(), productList.size());
-
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
             ProductDto resultProduct = productList.stream()
@@ -149,7 +113,6 @@ class ProductDtoControllerTest {
             assertEquals(resultProduct.getPrice(), resultProductResponse.getPrice());
             assertEquals(resultProduct.getCategory(), resultProductResponse.getCategory());
         }
-
         verify(productService,times(1)).findByName(anyString());
     }
 
@@ -159,25 +122,14 @@ class ProductDtoControllerTest {
         productList.add(productLevi);
         when(productService.findByName(anyString())).thenReturn(productList);
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
-
-        ResponseEntity result = productController.getProductsByName(NAME_OF_ONE_PRODUCT);
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
-
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
-        assertEquals(resultListProductsResponse.size(), productList.size());
+        List<ProductResponse> resultListProductsResponse = productController.getProductsByName(NAME_OF_ONE_PRODUCT);
 
         ProductResponse resultProduct = resultListProductsResponse.get(0);
-
+        assertEquals(resultListProductsResponse.size(), productList.size());
         assertEquals(resultProduct.getId(), productList.get(0).getId());
         assertEquals(resultProduct.getName(), productList.get(0).getName());
         assertEquals(resultProduct.getPrice(), productList.get(0).getPrice());
         assertEquals(resultProduct.getCategory(), productList.get(0).getCategory());
-
         verify(productService,times(1)).findByName(anyString());
     }
 
@@ -188,18 +140,9 @@ class ProductDtoControllerTest {
         productList.add(productSofm);
         when(productService.findByName(anyString())).thenReturn(productList);
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        List<ProductResponse> resultListProductsResponse = productController.getProductsByName(NAME_OF_TWO_PRODUCTS + " " + NAME_OF_ONE_PRODUCT);
 
-        ResponseEntity result = productController.getProductsByName(NAME_OF_TWO_PRODUCTS + " " + NAME_OF_ONE_PRODUCT);
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
-
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
         assertEquals(resultListProductsResponse.size(), productList.size());
-
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
             ProductDto resultProduct = productList.stream()
@@ -211,7 +154,6 @@ class ProductDtoControllerTest {
             assertEquals(resultProduct.getPrice(), resultProductResponse.getPrice());
             assertEquals(resultProduct.getCategory(), resultProductResponse.getCategory());
         }
-
         verify(productService,times(2)).findByName(anyString());
     }
 
@@ -221,21 +163,11 @@ class ProductDtoControllerTest {
         productList.add(productLevi);
         productList.add(productSofm);
         when(productService.findByName(anyString())).thenReturn(productList);
-
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
-
         String nameRequest = NAME_OF_TWO_PRODUCTS + " " + NAME_OF_ONE_PRODUCT + "  " + NAME_OF_TWO_PRODUCTS;
 
-        ResponseEntity result = productController.getProductsByName(nameRequest);
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
+        List<ProductResponse> resultListProductsResponse = productController.getProductsByName(nameRequest);
 
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
         assertEquals(resultListProductsResponse.size(), productList.size());
-
         for (int idx = 0; idx < productList.size(); idx ++) {
             ProductResponse resultProductResponse = resultListProductsResponse.get(idx);
             ProductDto resultProduct = productList.stream()
@@ -247,7 +179,6 @@ class ProductDtoControllerTest {
             assertEquals(resultProduct.getPrice(), resultProductResponse.getPrice());
             assertEquals(resultProduct.getCategory(), resultProductResponse.getCategory());
         }
-
         verify(productService,times(2)).findByName(anyString());
     }
 
@@ -255,18 +186,9 @@ class ProductDtoControllerTest {
     void testGetProductsByName_shouldYieldEmptyList_WhenCannotCaseNameMatch() {
         when(productService.findByName(anyString())).thenReturn(new ArrayList<>());
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, productList);
-        ResponseEntity responseEntity = new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        List<ProductResponse> resultListProductsResponse = productController.getProductsByName(NAME_OF_NONE_PRODUCT);
 
-
-        ResponseEntity result = productController.getProductsByName(NAME_OF_NONE_PRODUCT);
-        ApiResponse resultApiResponse = (ApiResponse) result.getBody();
-        List<ProductResponse> resultListProductsResponse = (List<ProductResponse>) resultApiResponse.getMessage();
-
-        assertNotNull(resultApiResponse.getMessage());
-        assertEquals(result.getStatusCode(), responseEntity.getStatusCode());
-        assertEquals(resultApiResponse.getSuccess(), apiResponse.getSuccess());
         assertEquals(resultListProductsResponse.size(), 0);
-
+        verify(productService,times(1)).findByName(anyString());
     }
 }

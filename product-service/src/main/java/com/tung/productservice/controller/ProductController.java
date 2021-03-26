@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         List<ProductDto> result = productService.findAll();
 
         List<ProductResponse> productResponseList = new ArrayList<>();
@@ -38,15 +38,13 @@ public class ProductController {
             productResponseList.add(productResponse);
         }
 
-        ApiResponse response = new ApiResponse(Boolean.TRUE, productResponseList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return productResponseList;
     }
 
     @GetMapping(
-            path = "${product-service.api.url.search:/search}"
+            path = "/search"
     )
-    public ResponseEntity<ApiResponse> getProductsByName(@RequestParam(name = "name") String name) {
+    public List<ProductResponse> getProductsByName(@RequestParam(name = "name") String name) {
         Set<ProductDto> result = new HashSet<>();
         if ( name == null) {
             result = new HashSet<>(productService.findAll());
@@ -66,9 +64,7 @@ public class ProductController {
             productResponseList.add(productResponse);
         }
 
-        ApiResponse response = new ApiResponse(Boolean.TRUE, productResponseList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return productResponseList;
     }
 
 }
