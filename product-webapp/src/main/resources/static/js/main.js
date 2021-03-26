@@ -38,7 +38,7 @@ $(document).ready(function () {
         ],
         ajax: {
             url: '/product-api?name=',
-            dataSrc: 'message',
+            dataSrc: '',
         },
         columns: [
             {title: 'id', data: 'id'},
