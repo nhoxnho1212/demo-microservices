@@ -1,13 +1,10 @@
 package com.tung.categoryservice.controller;
 
 import com.tung.categoryservice.dto.CategoryDto;
-import com.tung.categoryservice.payload.response.ApiResponse;
 import com.tung.categoryservice.payload.response.CategoryResponse;
 import com.tung.categoryservice.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,19 +27,18 @@ public class CategoryController {
     @GetMapping(
             path = "/{categoryId}"
     )
-    public ResponseEntity<ApiResponse> getCategoryById(@PathVariable final String categoryId) {
+    public CategoryResponse getCategoryById(@PathVariable final String categoryId) {
         CategoryResponse categoryResponse = new CategoryResponse();
 
         CategoryDto categoryDto = categoryService.findById(categoryId);
 
         BeanUtils.copyProperties(categoryDto, categoryResponse);
 
-        ApiResponse response = new ApiResponse(Boolean.TRUE, categoryDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return categoryResponse;
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         List<CategoryResponse> listCategoriesResponse = new ArrayList<>();
 
         List<CategoryDto> listCategories = categoryService.findAll();
@@ -53,8 +49,7 @@ public class CategoryController {
             listCategoriesResponse.add(categoryResponse);
         }
 
-        ApiResponse response = new ApiResponse(Boolean.TRUE, listCategoriesResponse);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return listCategoriesResponse;
     }
 
 }
