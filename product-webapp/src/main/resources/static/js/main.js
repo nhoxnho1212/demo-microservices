@@ -26,6 +26,7 @@ $(document).ready(function () {
     // Data table Product
     var tableProducts = $('#tableProducts').DataTable({
         searching: true,
+        serverSide: true,
         columnDefs: [
             {
                 "targets": 'table-column__no-sort',
@@ -37,8 +38,41 @@ $(document).ready(function () {
             }
         ],
         ajax: {
-            url: '/product-api?name=',
-            dataSrc: '',
+            url: '/product/searchAndPaging',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            // dataSrc: '',
+            data: function (data) {
+                data.name = $("#inputSearchProduct").val();
+                let orders = data.order;
+                for (let order of orders) {
+                    switch (order.column) {
+                        case 0:
+                            order.columnName = 'id';
+                            break;
+                        case 1:
+                            order.columnName = 'name';
+                            break;
+                        case 2:
+                            order.columnName = 'price';
+                            break;
+                        case 3:
+                            order.columnName = 'category';
+                            break;
+                    }
+                }
+                data.order = orders;
+                data.category = listCategoriesSelected;
+                console.log(data);
+                return JSON.stringify(data);
+            },
+            dataFilter: function (data) {
+                let json = JSON.parse(data);
+                json.recordsTotal = json.total;
+                json.recordsFiltered = json.total;
+                return JSON.stringify( json );
+            }
         },
         columns: [
             {title: 'id', data: 'id'},
@@ -71,9 +105,8 @@ $(document).ready(function () {
     );
 
     $("#btnSearchProduct").click(function () {
-        var url = '/product-api?name=' + $("#inputSearchProduct").val();
 
-        tableProducts.ajax.url(url).load();
+        tableProducts.ajax.reload();
         data = tableProducts.rows.data;
     });
 
