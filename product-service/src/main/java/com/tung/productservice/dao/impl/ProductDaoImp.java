@@ -1,9 +1,12 @@
 package com.tung.productservice.dao.impl;
 
-import com.tung.productservice.config.constant.ErrorMessages;
+import com.tung.productservice.dto.paging.Page;
+import com.tung.productservice.exception.ServiceError;
 import com.tung.productservice.dto.ProductDto;
+import com.tung.productservice.dto.paging.Direction;
 import com.tung.productservice.exception.DatabaseException;
 import com.tung.productservice.dao.ProductDao;
+import com.tung.productservice.payload.request.ProductPagingRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +43,7 @@ public class ProductDaoImp implements ProductDao {
         // Has any problem executing the query
         catch (DataAccessException exception) {
             logger.error(exception.getMessage());
-            throw new DatabaseException(ErrorMessages.DATABASE_HAS_A_PROBLEM.getMessage());
+            throw new DatabaseException(ServiceError.DATABASE_HAS_A_PROBLEM);
         }
 
         return result;
@@ -62,9 +65,73 @@ public class ProductDaoImp implements ProductDao {
         // Has any problem executing the query
         catch (DataAccessException exception) {
             logger.error(exception.getMessage());
-            throw new DatabaseException(ErrorMessages.DATABASE_HAS_A_PROBLEM.getMessage());
+            throw new DatabaseException(ServiceError.DATABASE_HAS_A_PROBLEM);
         }
 
         return result;
+    }
+
+    @Override
+    public Page<ProductDto> findAndPaging(ProductPagingRequest productPagingRequest) {
+        String columnName;
+        Direction direction;
+        Integer total = 0;
+
+        if (productPagingRequest.getOrder().size() > 0) {
+            columnName = productPagingRequest.getOrder().get(0).getColumnName();
+            direction = productPagingRequest.getOrder().get(0).getDir();
+        }
+        else {
+            columnName = "id";
+            direction = Direction.asc;
+        }
+
+        String conditionCategory =  "";
+
+        if (productPagingRequest.getCategory().size() > 0) {
+            conditionCategory = String.format("LOCATE(p.category, '%s') > 0 AND", productPagingRequest.getCategory().toString());
+        }
+
+        String searchPattern = "%" + productPagingRequest.getName() + "%";
+        String sql = String.format("SELECT * " +
+                        "FROM product p " +
+                        "WHERE %s p.name LIKE '%s' " +
+                        "order by %s %s " +
+                        "LIMIT %d " +
+                        "OFFSET %d;",
+                conditionCategory,
+                searchPattern,
+                columnName,
+                direction.name(),
+                productPagingRequest.getLength(),
+                productPagingRequest.getStart()
+                );
+
+        String sqlTotal = String.format("SELECT COUNT(*) " +
+                        "FROM product p " +
+                        "WHERE %s p.name LIKE '%s' " +
+                        "order by %s %s;",
+                conditionCategory,
+                searchPattern,
+                columnName,
+                direction.name()
+        );
+
+        List<ProductDto> resultQuery;
+
+        try {
+            resultQuery =  jdbcTemplate.query(sql,
+                    new BeanPropertyRowMapper<>(ProductDto.class));
+            total =  jdbcTemplate.queryForObject(sqlTotal, Integer.class);
+
+        }
+        // Has any problem executing the query
+        catch (DataAccessException exception) {
+            logger.error(exception.getMessage());
+            throw new DatabaseException(ServiceError.DATABASE_HAS_A_PROBLEM);
+        }
+
+        return new Page<ProductDto>(resultQuery, total);
+
     }
 }

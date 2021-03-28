@@ -2,6 +2,8 @@ package com.tung.productservice.service.impl;
 
 import com.tung.productservice.dto.ProductDto;
 import com.tung.productservice.dao.ProductDao;
+import com.tung.productservice.dto.paging.Page;
+import com.tung.productservice.payload.request.ProductPagingRequest;
 import com.tung.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,13 @@ public class ProductServiceImpl implements ProductService {
         if (null == result) {
             result = new ArrayList<>();
         }
+        return result;
+    }
+
+    @Override
+    public Page<ProductDto> findAndPaging(ProductPagingRequest productPagingRequest) {
+        Page<ProductDto> result = productDao.findAndPaging(productPagingRequest);
+
         return result;
     }
 }

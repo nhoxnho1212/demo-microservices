@@ -1,6 +1,8 @@
 package com.tung.productservice.controller;
 
 import com.tung.productservice.dto.ProductDto;
+import com.tung.productservice.dto.paging.Page;
+import com.tung.productservice.payload.request.ProductPagingRequest;
 import com.tung.productservice.payload.response.ApiResponse;
 import com.tung.productservice.payload.response.ProductResponse;
 import com.tung.productservice.service.ProductService;
@@ -8,11 +10,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -65,6 +65,22 @@ public class ProductController {
         }
 
         return productResponseList;
+    }
+
+    @PostMapping(path = "/searchAndPaging")
+    public Page<ProductResponse> getProductPaging(@Valid @RequestBody ProductPagingRequest request) {
+
+        Page<ProductDto> result = productService.findAndPaging(request);
+
+        List<ProductResponse> productResponseList = new ArrayList<>();
+
+        for (ProductDto product : result.getData()) {
+            ProductResponse productResponse = new ProductResponse();
+            BeanUtils.copyProperties(product, productResponse);
+            productResponseList.add(productResponse);
+        }
+
+        return new Page<>(productResponseList, result.getTotal());
     }
 
 }
