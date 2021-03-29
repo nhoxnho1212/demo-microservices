@@ -42,6 +42,11 @@ $(document).ready(function () {
             type: 'post',
             dataType: 'json',
             contentType: 'application/json',
+            beforeSend: function () {
+                if (tableProducts && tableProducts.hasOwnProperty('settings')) {
+                    tableProducts.settings()[0].jqXHR.abort();
+                }
+            },
             // dataSrc: '',
             data: function (data) {
                 data.name = $("#inputSearchProduct").val();
