@@ -1,0 +1,30 @@
+<header id="header" xmlns:th="http://www.thymeleaf.org" th:fragment="header-seach-product">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand">App</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="form-group d-inline-flex">
+                <input type="text" placeholder="Search a product" id="inputSearchProduct" class="form-control mx-2">
+                <button class="btn btn-primary my-2 my-sm-0 ml-2" id="btnSearchProduct">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+
+            <ul class="btn-order">
+                <button class="btn btn-shopping-cart">
+                    <i class="fa fa-shopping-cart"></i>
+                </button>
+                <span id="cartCount" class="badge badge-pill badge-danger label-cart-count"
+                >0</span
+                >
+            </ul>
+        </div>
+    </nav>
+</header>

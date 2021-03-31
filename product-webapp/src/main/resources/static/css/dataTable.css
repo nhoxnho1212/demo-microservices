@@ -1,0 +1,15 @@
+th {
+    background-color: #007bff !important;
+}
+
+th.sorting {
+    color: #fff;
+}
+
+.dataTables_length {
+    margin: 0.5rem 0;
+}
+
+.dataTables_filter {
+    display: none;
+}

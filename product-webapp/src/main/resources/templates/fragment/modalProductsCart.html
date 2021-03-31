@@ -1,0 +1,23 @@
+<div id="modalAddCartContent" xmlns:th="http://www.thymeleaf.org" th:fragment="modal-products-cart" style="display: none;">
+    <div>
+        <!--      Data table products Order     -->
+        <table id="tableProductsOrder" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>CategoryId</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody class="table-products">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-end my-3">
+        <span class="mx-2"><b>Total: </b></span> <span id="txtTotalPrice"></span>
+    </div>
+</div>

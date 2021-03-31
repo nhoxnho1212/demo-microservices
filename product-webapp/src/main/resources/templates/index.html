@@ -36,43 +36,14 @@
     <link rel="stylesheet" type="text/css" th:href="@{/lib/toastr/toastr.min.css}"/>
 
     <link rel="stylesheet" href="./css/style.css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="./css/style.css" th:href="@{/css/dataTable.css}"/>
+    <link rel="stylesheet" href="./css/style.css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" href="./css/style.css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" href="./css/style.css" th:href="@{/css/selectBox.css}"/>
 </head>
 <body>
 
-<!-- ==================== Begin Header ==================== -->
-<header id="header">
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand">App</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- <form class="form-inline"> -->
-
-            <div class="form-group d-inline-flex">
-                <input type="text" placeholder="Search a product" id="inputSearchProduct" class="form-control mx-2">
-                <button class="btn btn-primary my-2 my-sm-0 ml-2" id="btnSearchProduct">
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-            <!-- </form> -->
-            <ul class="btn-order">
-                <button class="btn btn-shopping-cart">
-                    <i class="fa fa-shopping-cart"></i>
-                </button>
-                <span id="cartCount" class="badge badge-pill badge-danger label-cart-count"
-                >0</span
-                >
-            </ul>
-        </div>
-    </nav>
-</header>
-
-<!-- ==================== End Header// ==================== -->
+<div th:replace="fragment/header :: header-seach-product"></div>
 
 <!-- ==================== Begin Main ==================== -->
 
@@ -133,47 +104,13 @@
 
     <!-- ==================== End Section content// ==================== -->
 
-
 </main>
 
-<div id="modalAddCartContent" style="display: none;">
-    <div>
-        <!--      Data table products Order     -->
-        <table id="tableProductsOrder" class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>CategoryId</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-            </thead>
-            <tbody class="table-products">
-            </tbody>
-        </table>
-    </div>
-
-    <div class="d-flex justify-content-end my-3">
-        <span class="mx-2"><b>Total: </b></span> <span id="txtTotalPrice"></span>
-    </div>
-</div>
+<div th:replace="fragment/modalProductsCart :: modal-products-cart"></div>
 
 <!-- ==================== End Main// ==================== -->
 
-<!-- ==================== Begin Footer ==================== -->
-<footer id="footer">
-    <!-- Copyright -->
-    <div
-            class="text-center p-4"
-            style="background-color: #fff; color: #b9b9b9"
-    >
-        © 2021 Copyright
-    </div>
-    <!-- Copyright -->
-</footer>
-<!-- ==================== End Footer// ==================== -->
+<div th:replace="fragment/footer"></div>
 
 <!-- Optional JavaScript -->
 
@@ -197,6 +134,14 @@
 
 <!-- Toastr -->
 <script th:src="@{/lib/toastr/toastr.min.js}"></script>
+
+<script th:src="@{/js/productTable.js}"></script>
+
+<script th:src="@{/js/categoriesSelection.js}"></script>
+
+<script th:src ="@{/js/searchProducts.js}"></script>
+
+<script th:src ="@{/js/modalCart.js}"></script>
 
 <script src="./js/main.js" th:src="@{/js/main.js}"></script>
 
