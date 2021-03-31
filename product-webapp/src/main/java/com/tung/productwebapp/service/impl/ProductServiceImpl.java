@@ -12,19 +12,22 @@ import com.tung.productwebapp.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = {"SEARCH"}, cacheManager = "SearchCacheManager")
 public class ProductServiceImpl implements ProductService {
 
     private ProductClient productClient;
 
     private CategoryClient categoryClient;
 
-    Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Autowired
     public ProductServiceImpl(ProductClient productClient, CategoryClient categoryClient) {
@@ -67,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(key = "{#request.toString()}")
     public Page<Product> searchAndPaging(SearchAndPagingProductRequest request) {
         Page<ProductRequest> response = productClient.searchAndPaging(request);
 

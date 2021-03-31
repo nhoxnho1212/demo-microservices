@@ -12,6 +12,14 @@ public class Order {
     public Order() {
     }
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "columnName='" + columnName + '\'' +
+                ", dir=" + dir +
+                '}';
+    }
+
     public String getColumnName() {
         return columnName;
     }

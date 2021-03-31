@@ -23,6 +23,17 @@ public class SearchAndPagingProductRequest {
     public SearchAndPagingProductRequest() {
     }
 
+    @Override
+    public String toString() {
+        return "SearchAndPagingProductRequest{" +
+                "name='" + name + '\'' +
+                ", order=" + order +
+                ", start=" + start +
+                ", length=" + length +
+                ", category=" + category +
+                '}';
+    }
+
     public String getName() {
         return name;
     }
