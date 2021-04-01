@@ -12,6 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +49,11 @@ class CategoryServiceImplTest {
 
         List<CategoryDto> result = categoryService.findAll();
 
-        assertNotNull(result);
-        assertEquals(categoryDtoList.size(), result.size());
-        final int cateSize = categoryDtoList.size();
-        for (int idx = 0; idx < cateSize; idx ++) {
-            assertEquals(result.get(idx), categoryDtoList.get(idx));
-        }
+        assertThat(result, notNullValue());
+        assertThat(result, hasSize(categoryDtoList.size()));
+        categoryDtoList.forEach(category -> {
+            assertThat(result, hasItem(category));
+        });
         verify(categoryDao, times(1)).findAll();
     }
 
@@ -61,8 +63,8 @@ class CategoryServiceImplTest {
 
         List<CategoryDto> result = categoryService.findAll();
 
-        assertNotNull(result);
-        assertEquals(result.size(), 0);
+        assertThat(result, notNullValue());
+        assertThat(result, empty());
         verify(categoryDao, times(1)).findAll();
     }
 
@@ -72,9 +74,8 @@ class CategoryServiceImplTest {
 
         CategoryDto result = categoryService.findById(categoryDto.getId());
 
-        assertNotNull(result);
-        assertEquals(categoryDto.getId(), result.getId());
-        assertEquals(categoryDto.getName(), result.getName());
+        assertThat(result, notNullValue());
+        assertThat(result, equalTo(categoryDto));
         verify(categoryDao, times(1)).findById(anyString());
     }
 
@@ -87,7 +88,6 @@ class CategoryServiceImplTest {
                     categoryService.findById(categoryDto.getId());
                 }
         );
-
         verify(categoryDao, times(1)).findById(anyString());
     }
 }

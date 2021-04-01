@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
@@ -44,31 +48,27 @@ class ProductServiceImplTest {
 
     @Test
     void testFindAll() {
-        Mockito.when(productDao.findAll()).thenReturn(productList);
+        when(productDao.findAll()).thenReturn(productList);
 
         List<ProductDto> result = productService.findAll();
 
-        assertNotNull(result);
-        assertEquals(result.size(), productList.size());
-        for (int idx = 0; idx < productList.size(); idx++ ) {
-            assertEquals(result.get(idx).getId(), productList.get(idx).getId());
-            assertEquals(result.get(idx).getName(), productList.get(idx).getName());
-            assertEquals(result.get(idx).getPrice(), productList.get(idx).getPrice());
-            assertEquals(result.get(idx).getCategory(), productList.get(idx).getCategory());
-        }
-
-        Mockito.verify(productDao, Mockito.times(1)).findAll();
+        assertThat(result, notNullValue());
+        assertThat(result, hasSize(productList.size()));
+        productList.forEach(productDto -> {
+            assertThat(result, hasItem(productDto));
+        });
+        verify(productDao, times(1)).findAll();
     }
 
     @Test
     void testFindAll_NotAnyProducts() {
-        Mockito.when(productDao.findAll()).thenReturn(null);
+        when(productDao.findAll()).thenReturn(null);
 
         List<ProductDto> result = productService.findAll();
 
-        assertNotNull(result);
-        assertEquals(result.size(), 0);
-        Mockito.verify(productDao, Mockito.times(1)).findAll();
+        assertThat(result, notNullValue());
+        assertThat(result, hasSize(0));
+        verify(productDao, times(1)).findAll();
     }
 
     @Test
@@ -77,16 +77,16 @@ class ProductServiceImplTest {
         listOfThreeProducts.add(productCanyon);
         listOfThreeProducts.add(productLevi);
         listOfThreeProducts.add(productSofm);
-        Mockito.when(productDao.findByName(Mockito.anyString())).thenReturn(listOfThreeProducts);
+        when(productDao.findByName(anyString())).thenReturn(listOfThreeProducts);
 
         List<ProductDto> result = productService.findByName(NAME_OF_THREE_PRODUCTS);
 
-        assertNotNull(result);
-        assertEquals(result.size(), 3);
-        assertTrue(listOfThreeProducts.contains(productCanyon));
-        assertTrue(listOfThreeProducts.contains(productSofm));
-        assertTrue(listOfThreeProducts.contains(productLevi));
-        Mockito.verify(productDao, Mockito.times(1)).findByName(Mockito.anyString());
+        assertThat(result, notNullValue());
+        assertThat(result, hasSize(3));
+        assertThat(result, hasItem(productCanyon));
+        assertThat(result, hasItem(productLevi));
+        assertThat(result, hasItem(productSofm));
+        verify(productDao, times(1)).findByName(anyString());
     }
 
     @Test
@@ -94,25 +94,25 @@ class ProductServiceImplTest {
         List<ProductDto> listOfOneProduct = new ArrayList<>();
         listOfOneProduct.add(productSofm);
 
-        Mockito.when(productDao.findByName(Mockito.anyString())).thenReturn(listOfOneProduct);
+        when(productDao.findByName(anyString())).thenReturn(listOfOneProduct);
 
         List<ProductDto> result = productService.findByName(NAME_OF_ONE_PRODUCT);
 
-        assertNotNull(result);
-        assertEquals(result.size(), 1);
-        assertTrue(listOfOneProduct.contains(productSofm));
-        Mockito.verify(productDao, Mockito.times(1)).findByName(Mockito.anyString());
+        assertThat(result, notNullValue());
+        assertThat(result, hasSize(1));
+        assertThat(listOfOneProduct, hasItem(productSofm));
+        verify(productDao, times(1)).findByName(anyString());
 
     }
 
     @Test
     void testFindByName_shouldYieldEmptyList_forAnyProductsNotBeMatch() {
-        Mockito.when(productDao.findByName(Mockito.anyString())).thenReturn(null);
+        when(productDao.findByName(anyString())).thenReturn(null);
 
         List<ProductDto> result = productService.findByName(NAME_OF_NONE_PRODUCT);
 
-        assertNotNull(result);
-        assertEquals(result.size(), 0);
-        Mockito.verify(productDao, Mockito.times(1)).findByName(Mockito.anyString());
+        assertThat(result, notNullValue());
+        assertThat(result, hasSize(0));
+        verify(productDao, times(1)).findByName(anyString());
     }
 }

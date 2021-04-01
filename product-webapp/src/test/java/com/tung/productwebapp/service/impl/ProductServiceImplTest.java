@@ -11,13 +11,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
@@ -73,16 +77,14 @@ class ProductServiceImplTest {
     void testGetByName_getAllProducts() {
         when(categoryClient.getAll()).thenReturn(categoryList);
         when(productClient.findByName(anyString())).thenReturn(productRequestList);
-        List<Product> result = productService.getByName(NAME_OF_ALL_PRODUCTS);
+        List<Product> resultProductsList = productService.getByName(NAME_OF_ALL_PRODUCTS);
 
-        assertNotNull(result);
-        assertEquals(result.size(), productList.size());
+        assertThat(resultProductsList, notNullValue());
+        assertThat(resultProductsList, hasSize(productList.size()));
         for (int idx = 0; idx < productList.size(); idx++ ) {
-            assertEquals(result.get(idx).getId(), productList.get(idx).getId());
-            assertEquals(result.get(idx).getName(), productList.get(idx).getName());
-            assertEquals(result.get(idx).getPrice(), productList.get(idx).getPrice());
-            assertEquals(result.get(idx).getCategory().getId(), productList.get(idx).getCategory().getId());
-            assertEquals(result.get(idx).getCategory().getName(), productList.get(idx).getCategory().getName());
+            Product result = resultProductsList.get(idx);
+            Product product = productList.get(idx);
+            assertThat(result, samePropertyValuesAs(product));
         }
         verify(categoryClient, times(1)).getAll();
         verify(productClient, times(1)).findByName(anyString());
@@ -96,8 +98,8 @@ class ProductServiceImplTest {
 
         List<Product> result = productService.getByName(NAME_OF_NONE_PRODUCT);
 
-        assertNotNull(result);
-        assertEquals(result.size(), 0);
+        assertThat(result, notNullValue());
+        assertThat(result, hasSize(0));
         verify(categoryClient, times(1)).getAll();
         verify(productClient, times(1)).findByName(anyString());
     }

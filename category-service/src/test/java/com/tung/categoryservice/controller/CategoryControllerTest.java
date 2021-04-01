@@ -3,6 +3,7 @@ package com.tung.categoryservice.controller;
 import com.tung.categoryservice.dto.CategoryDto;
 import com.tung.categoryservice.payload.response.CategoryResponse;
 import com.tung.categoryservice.service.CategoryService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,9 +49,9 @@ class CategoryControllerTest {
 
         CategoryResponse result = categoryController.getCategoryById(categoryId);
 
-        assertNotNull(result);
-        assertEquals(result.getName(), category.getName());
-        assertEquals(result.getId(), category.getId());
+        assertThat(result, notNullValue());
+        assertThat(result.getId(), equalTo(category.getId()));
+        assertThat(result.getName(), equalTo(category.getName()));
         verify(categoryService, times(1)).findById(anyString());
 
     }
@@ -58,13 +62,15 @@ class CategoryControllerTest {
 
         List<CategoryResponse> resultListCategoriesResponse = categoryController.getAllCategories();
 
-        assertEquals(resultListCategoriesResponse.size(), listCategories.size());
-        for (int idx = 0; idx < listCategories.size(); idx ++) {
-            CategoryResponse resultCategory = resultListCategoriesResponse.get(idx);
+        assertThat(resultListCategoriesResponse, hasSize(listCategories.size()));
+        IntStream.range(0, listCategories.size())
+                .forEach(idx -> {
+                    CategoryDto categoryDto = listCategories.get(idx);
+                    CategoryResponse result = resultListCategoriesResponse.get(idx);
 
-            assertEquals(resultCategory.getId(), listCategories.get(idx).getId());
-            assertEquals(resultCategory.getName(), listCategories.get(idx).getName());
-        }
+                    assertThat(result.getId(), equalTo(categoryDto.getId()));
+                    assertThat(result.getName(), equalTo(categoryDto.getName()));
+                });
         verify(categoryService, times(1)).findAll();
 
     }
