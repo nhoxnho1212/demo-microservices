@@ -3,18 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.tung</groupId>
+        <artifactId>demo-microservice</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>com.tung</groupId>
     <artifactId>spring-clould-config-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-clould-config-server</name>
-    <description>spring-clould-config-server</description>
+    <name>spring-cloud-config-server</name>
+    <description>spring-cloud-config-server</description>
     <properties>
-        <java.version>1.8</java.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
     </properties>
     <dependencies>
