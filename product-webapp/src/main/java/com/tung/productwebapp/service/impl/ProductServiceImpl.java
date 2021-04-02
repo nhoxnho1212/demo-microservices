@@ -7,7 +7,6 @@ import com.tung.productwebapp.model.Product;
 import com.tung.productwebapp.model.ProductRequest;
 import com.tung.productwebapp.model.SearchAndPagingProductRequest;
 import com.tung.productwebapp.model.paging.Page;
-import com.tung.productwebapp.service.CategoryService;
 import com.tung.productwebapp.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +16,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@CacheConfig(cacheNames = {"SEARCH"}, cacheManager = "SearchCacheManager")
+@CacheConfig(cacheNames = {"SEARCH"}, cacheManager = "searchCacheManager")
 public class ProductServiceImpl implements ProductService {
 
     private ProductClient productClient;
@@ -42,16 +43,12 @@ public class ProductServiceImpl implements ProductService {
         List<Category> categoryList = categoryClient.getAll();
         List<Product> productList = new ArrayList<>();
 
+        Map<String, Category> categories = categoryList.stream().collect(Collectors.toMap(Category::getId, Function.identity()));
+
         for (ProductRequest productRequest : productsRequest) {
             Product product = new Product();
-
             product.setId(productRequest.getId());
-            Category category = categoryList.stream()
-                    .filter(c -> c.getId().contains(productRequest.getCategory()))
-                    .limit(1)
-                    .collect(Collectors.toList())
-                    .get(0);
-            product.setCategory(category);
+            product.setCategory(categories.get(productRequest.getCategoryId()));
             product.setPrice(productRequest.getPrice());
             product.setName(productRequest.getName());
 

@@ -59,7 +59,7 @@ class ProductControllerTest {
                     assertThat(result.getId(), equalTo(productDto.getId()));
                     assertThat(result.getName(), equalTo(productDto.getName()));
                     assertThat(result.getPrice(), equalTo(productDto.getPrice()));
-                    assertThat(result.getCategory(), equalTo(productDto.getCategory()));
+                    assertThat(result.getCategoryId(), equalTo(productDto.getCategory()));
                 });
 
         verify(productService,times(1)).findAll();
@@ -96,7 +96,7 @@ class ProductControllerTest {
                     assertThat(result.getId(), equalTo(productDto.getId()));
                     assertThat(result.getName(), equalTo(productDto.getName()));
                     assertThat(result.getPrice(), equalTo(productDto.getPrice()));
-                    assertThat(result.getCategory(), equalTo(productDto.getCategory()));
+                    assertThat(result.getCategoryId(), equalTo(productDto.getCategory()));
                 });
         verify(productService,times(1)).findAll();
     }
@@ -120,7 +120,7 @@ class ProductControllerTest {
                     assertThat(result.getId(), equalTo(productDto.getId()));
                     assertThat(result.getName(), equalTo(productDto.getName()));
                     assertThat(result.getPrice(), equalTo(productDto.getPrice()));
-                    assertThat(result.getCategory(), equalTo(productDto.getCategory()));
+                    assertThat(result.getCategoryId(), equalTo(productDto.getCategory()));
                 });
         verify(productService,times(1)).findByName(anyString());
     }
@@ -138,7 +138,7 @@ class ProductControllerTest {
         ProductResponse resultProduct = resultListProductsResponse.get(0);
         assertThat(resultProduct.getName(), equalTo(productLevi.getName()));
         assertThat(resultProduct.getPrice(), equalTo(productLevi.getPrice()));
-        assertThat(resultProduct.getCategory(), equalTo(productLevi.getCategory()));
+        assertThat(resultProduct.getCategoryId(), equalTo(productLevi.getCategory()));
         verify(productService,times(1)).findByName(anyString());
     }
 
@@ -164,7 +164,7 @@ class ProductControllerTest {
                     assertThat(result.getId(), equalTo(productDto.getId()));
                     assertThat(result.getName(), equalTo(productDto.getName()));
                     assertThat(result.getPrice(), equalTo(productDto.getPrice()));
-                    assertThat(result.getCategory(), equalTo(productDto.getCategory()));
+                    assertThat(result.getCategoryId(), equalTo(productDto.getCategory()));
                 });
         verify(productService,times(2)).findByName(anyString());
     }
@@ -192,7 +192,7 @@ class ProductControllerTest {
                     assertThat(result.getId(), equalTo(productDto.getId()));
                     assertThat(result.getName(), equalTo(productDto.getName()));
                     assertThat(result.getPrice(), equalTo(productDto.getPrice()));
-                    assertThat(result.getCategory(), equalTo(productDto.getCategory()));
+                    assertThat(result.getCategoryId(), equalTo(productDto.getCategory()));
                 });
         verify(productService,times(2)).findByName(anyString());
     }

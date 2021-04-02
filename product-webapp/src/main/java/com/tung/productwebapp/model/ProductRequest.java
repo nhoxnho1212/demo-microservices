@@ -4,13 +4,13 @@ public class ProductRequest {
         private long id;
         private String name;
         private Double price;
-        private String category;
+        private String categoryId;
 
-        public ProductRequest(long id, String name, Double price, String category) {
+        public ProductRequest(long id, String name, Double price, String categoryId) {
                 this.id = id;
                 this.name = name;
                 this.price = price;
-                this.category = category;
+                this.categoryId = categoryId;
         }
 
         public ProductRequest() {
@@ -40,11 +40,11 @@ public class ProductRequest {
                 this.price = price;
         }
 
-        public String getCategory() {
-                return category;
+        public String getCategoryId() {
+                return categoryId;
         }
 
-        public void setCategory(String category) {
-                this.category = category;
+        public void setCategoryId(String categoryId) {
+                this.categoryId = categoryId;
         }
 }

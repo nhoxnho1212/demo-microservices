@@ -34,6 +34,7 @@ public class ProductController {
 
         for (ProductDto product : result) {
             ProductResponse productResponse = new ProductResponse();
+            productResponse.setCategoryId(product.getCategory());
             BeanUtils.copyProperties(product, productResponse);
             productResponseList.add(productResponse);
         }
@@ -60,6 +61,7 @@ public class ProductController {
 
         for (ProductDto product : result) {
             ProductResponse productResponse = new ProductResponse();
+            productResponse.setCategoryId(product.getCategory());
             BeanUtils.copyProperties(product, productResponse);
             productResponseList.add(productResponse);
         }
@@ -76,6 +78,7 @@ public class ProductController {
 
         for (ProductDto product : result.getData()) {
             ProductResponse productResponse = new ProductResponse();
+            productResponse.setCategoryId(product.getCategory());
             BeanUtils.copyProperties(product, productResponse);
             productResponseList.add(productResponse);
         }
