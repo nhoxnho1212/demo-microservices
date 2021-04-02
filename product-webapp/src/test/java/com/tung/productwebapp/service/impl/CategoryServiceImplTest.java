@@ -46,15 +46,8 @@ class CategoryServiceImplTest {
 
         List<Category> result = categoryService.getAll();
 
-//        assertNotNull(result);
         assertThat(result, notNullValue());
-//        assertEquals(categoryList.size(), result.size());
         assertThat(result, hasSize(categoryList.size()));
-//        final int cateSize = categoryList.size();
-//        for (int idx = 0; idx < cateSize; idx ++) {
-//            assertEquals(result.get(idx).getId(), categoryList.get(idx).getId());
-//            assertEquals(result.get(idx).getName(), categoryList.get(idx).getName());
-//        }
         for (int idx = 0; idx < categoryList.size(); idx ++) {
             assertThat(result.get(idx), samePropertyValuesAs(categoryList.get(idx)));
         }
@@ -68,9 +61,7 @@ class CategoryServiceImplTest {
 
         List<Category> result = categoryService.getAll();
 
-//        assertNotNull(result);
         assertThat(result, notNullValue());
-//        assertEquals(result.size(), listEmptyCategory.size());
         assertThat(result, hasSize(0));
         verify(categoryClient, times(1)).getAll();
     }
