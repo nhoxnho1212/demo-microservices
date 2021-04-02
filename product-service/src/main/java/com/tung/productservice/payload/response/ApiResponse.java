@@ -7,8 +7,6 @@ public class ApiResponse {
     private Boolean success;
     private Object message;
 
-    // ---- Constructor ----
-
     public ApiResponse() {
     }
 
