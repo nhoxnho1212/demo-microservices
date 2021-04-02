@@ -47,6 +47,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDto> findAndPaging(ProductPagingRequest productPagingRequest) {
+        String name = productPagingRequest.getName();
+        name = name.trim();
+        // Remove special characters
+        name = name.replaceAll("[^\\w+]", "");
+        productPagingRequest.setName(name);
+
         Page<ProductDto> result = productDao.findAndPaging(productPagingRequest);
 
         return result;

@@ -131,7 +131,7 @@ public class ProductDaoImp implements ProductDao {
             throw new DatabaseException(ServiceError.DATABASE_HAS_A_PROBLEM);
         }
 
-        return new Page<ProductDto>(resultQuery, total);
+        return new Page<>(resultQuery, total);
 
     }
 }
