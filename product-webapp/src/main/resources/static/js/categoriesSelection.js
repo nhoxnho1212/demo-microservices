@@ -1,13 +1,25 @@
-$(document).ready(function () {
-    $("#selectCategory").select2();
+function categoriesSelection() {
+    var selectCategories,
+        instance = this;
 
-    $('#selectCategory').on("select2:select", function (e) {
-        // Reload fragment table product when searching
-        $('#tableProducts').DataTable().draw();
-    });
+    function setup() {
+        selectCategories = $("#selectCategory");
+        selectCategories.select2();
+    }
+    function searchTableWithCategories(table) {
 
-    $('#selectCategory').on("select2:unselect", function (e) {
-        // Reload fragment table product when searching
-        $('#tableProducts').DataTable().draw();
-    });
-});
+        selectCategories.on("select2:select", function (e) {
+           table.draw();
+        });
+
+        selectCategories.on("select2:unselect", function (e) {
+            table.draw();
+        });
+    }
+
+    this.setup = setup;
+    this.searchTableWithCategories = searchTableWithCategories;
+    this.getSelectCategories = function () {
+        return selectCategories;
+    };
+}

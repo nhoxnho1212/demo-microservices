@@ -29,7 +29,7 @@ public class MainController {
 
         List<Category> categoryList = categoryService.getAll();
 
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView("page/index");
         modelAndView.addObject(categoryList);
         return modelAndView;
 
