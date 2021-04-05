@@ -21,7 +21,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@CacheConfig(cacheNames = {"SEARCH"}, cacheManager = "searchCacheManager")
+@CacheConfig(cacheNames = {"PRODUCT"}, cacheManager = "productCacheManager")
 public class ProductServiceImpl implements ProductService {
 
     private ProductClient productClient;

@@ -1,6 +1,7 @@
 package com.tung.productwebapp.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +23,8 @@ public class CaffeineCacheConfig {
     }
 
     @Bean
-    public CacheManager searchCacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("SEARCH");
+    public CacheManager productCacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("PRODUCT");
         cacheManager.setAllowNullValues(false);
         cacheManager.setCaffeine(searchCaffeineCacheBuilder());
         return  cacheManager;
@@ -36,7 +37,8 @@ public class CaffeineCacheConfig {
 
     private Caffeine<Object, Object> searchCaffeineCacheBuilder() {
         return Caffeine.newBuilder()
-                .maximumSize(1000000000)
+                .weakKeys()
+                .weakValues()
                 .expireAfterAccess(60, TimeUnit.SECONDS);
     }
 }
