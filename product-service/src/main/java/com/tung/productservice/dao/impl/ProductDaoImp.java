@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,29 +21,42 @@ import java.util.List;
 @Repository
 public class ProductDaoImp implements ProductDao {
 
-    Logger logger = LoggerFactory.getLogger(ProductDaoImp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductDaoImp.class);
 
-    public JdbcTemplate jdbcTemplate;
+    private static final String FIND_ALL_PRODUCTS_SQL = "SELECT id, name, price, category FROM product ORDER BY id DESC";
+    private static final String FIND_BY_NAME_SQL = "SELECT * FROM product WHERE name like :name";
+    private static final String FIND_AND_PAGING_PRODUCT_SQL = "SELECT * FROM product " +
+            "WHERE %s name LIKE :name " +
+            "ORDER BY :sortColumn :sortDirection " +
+            "LIMIT :limit " +
+            "OFFSET :startedAt";
+    private static final String NUMBER_OF_PRODUCT_SEARCHING_SQL ="SELECT COUNT(*) FROM product WHERE %s name LIKE :name";
+
+    private static final String NAME_PARAMETER = "name";
+    private static final String SORT_COLUMN_PARAMETER = "sortColumn";
+    private static final String SORT_DIRECTION_PARAMETER = "sortDirection";
+    private static final String LIMIT_PARAMETER = "limit";
+    private static final String STARTED_AT_PARAMETER = "startedAt";
+
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    public ProductDaoImp(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ProductDaoImp(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
     public List<ProductDto> findAll() {
 
-        String sql = "SELECT id, name, price, category FROM product ORDER BY id DESC;";
-
         List<ProductDto> result;
 
         try {
-            result =  jdbcTemplate.query(sql,
+            result =  namedParameterJdbcTemplate.query(FIND_ALL_PRODUCTS_SQL,
                     new BeanPropertyRowMapper<>(ProductDto.class));
         }
         // Has any problem executing the query
         catch (DataAccessException exception) {
-            logger.error(exception.getMessage());
+            LOGGER.error(exception.getMessage());
             throw new DatabaseException(ServiceError.DATABASE_HAS_A_PROBLEM);
         }
 
@@ -52,19 +66,17 @@ public class ProductDaoImp implements ProductDao {
     @Override
     public List<ProductDto> findByName(String name) {
         String searchPattern = "%" + name + "%";
-        String sql = String.format("SELECT id, name, price, category " +
-                "FROM product " +
-                "WHERE name like '%s';", searchPattern);
 
         List<ProductDto> result;
 
         try {
-            result =  jdbcTemplate.query(sql,
+            result =  namedParameterJdbcTemplate.query(FIND_BY_NAME_SQL,
+                    new MapSqlParameterSource(NAME_PARAMETER, searchPattern),
                     new BeanPropertyRowMapper<>(ProductDto.class));
         }
         // Has any problem executing the query
         catch (DataAccessException exception) {
-            logger.error(exception.getMessage());
+            LOGGER.error(exception.getMessage());
             throw new DatabaseException(ServiceError.DATABASE_HAS_A_PROBLEM);
         }
 
@@ -73,65 +85,43 @@ public class ProductDaoImp implements ProductDao {
 
     @Override
     public Page<ProductDto> findAndPaging(ProductPagingRequest productPagingRequest) {
-        String columnName;
-        Direction direction;
+        final String searchPattern = "%" + productPagingRequest.getName() + "%";
+        String columnName = "id";
+        Direction direction = Direction.asc;
         Integer total = 0;
+        String conditionCategory =  "";
 
         if (productPagingRequest.getOrder().size() > 0) {
             columnName = productPagingRequest.getOrder().get(0).getColumnName();
             direction = productPagingRequest.getOrder().get(0).getDir();
         }
-        else {
-            columnName = "id";
-            direction = Direction.asc;
-        }
-
-        String conditionCategory =  "";
 
         if (productPagingRequest.getCategory().size() > 0) {
-            conditionCategory = String.format("LOCATE(p.category, '%s') > 0 AND", productPagingRequest.getCategory().toString());
+            conditionCategory = String.format("LOCATE(category, '%s') > 0 AND", productPagingRequest.getCategory().toString());
         }
 
-        String searchPattern = "%" + productPagingRequest.getName() + "%";
-        String sql = String.format("SELECT * " +
-                        "FROM product p " +
-                        "WHERE %s p.name LIKE '%s' " +
-                        "order by %s %s " +
-                        "LIMIT %d " +
-                        "OFFSET %d;",
-                conditionCategory,
-                searchPattern,
-                columnName,
-                direction.name(),
-                productPagingRequest.getLength(),
-                productPagingRequest.getStart()
-                );
-
-        String sqlTotal = String.format("SELECT COUNT(*) " +
-                        "FROM product p " +
-                        "WHERE %s p.name LIKE '%s' " +
-                        "order by %s %s;",
-                conditionCategory,
-                searchPattern,
-                columnName,
-                direction.name()
-        );
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue(NAME_PARAMETER, searchPattern);
+        param.addValue(SORT_COLUMN_PARAMETER, columnName);
+        param.addValue(SORT_DIRECTION_PARAMETER, direction.name());
+        param.addValue(LIMIT_PARAMETER, productPagingRequest.getLength());
+        param.addValue(STARTED_AT_PARAMETER, productPagingRequest.getStart());
 
         List<ProductDto> resultQuery;
+        String query = String.format(FIND_AND_PAGING_PRODUCT_SQL, conditionCategory);
+        String queryTotal = String.format(NUMBER_OF_PRODUCT_SEARCHING_SQL, conditionCategory);
 
         try {
-            resultQuery =  jdbcTemplate.query(sql,
+            resultQuery =  namedParameterJdbcTemplate.query(query, param,
                     new BeanPropertyRowMapper<>(ProductDto.class));
-            total =  jdbcTemplate.queryForObject(sqlTotal, Integer.class);
-
+            total =  namedParameterJdbcTemplate.queryForObject(queryTotal, param, Integer.class);
         }
         // Has any problem executing the query
         catch (DataAccessException exception) {
-            logger.error(exception.getMessage());
+            LOGGER.error(exception.getMessage());
             throw new DatabaseException(ServiceError.DATABASE_HAS_A_PROBLEM);
         }
 
         return new Page<>(resultQuery, total);
-
     }
 }
