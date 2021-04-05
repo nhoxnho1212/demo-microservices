@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,47 +19,50 @@ import java.util.List;
 @Repository
 public class CategoryDaoImpl implements CategoryDao {
 
-    Logger logger = LoggerFactory.getLogger(CategoryDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryDaoImpl.class);
 
-    private JdbcTemplate jdbcTemplate;
+    private static final String FIND_ALL_CATEGORIES_SQL = "SELECT id, name FROM category";
+    private static final String FIND_BY_ID_SQL = "SELECT id, name FROM category WHERE id = :id";
+
+    private static final String ID_PARAMETER = "id";
+
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    public CategoryDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public CategoryDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     public List<CategoryDto> findAll() {
-        String sql ="SELECT id, name FROM category ORDER BY id DESC;";
         List<CategoryDto> result;
         try {
-            result = jdbcTemplate.query(sql,
+            result = namedParameterJdbcTemplate.query(FIND_ALL_CATEGORIES_SQL,
                     new BeanPropertyRowMapper<>(CategoryDto.class));
         }
         // Has any problem executing the query
         catch (DataAccessException exception) {
-            logger.error(exception.getMessage());
+            LOGGER.error(exception.getMessage());
             throw new DatabaseException(ErrorMessages.DATABASE_HAS_A_PROBLEM.getMessage());
         }
         return result;
-
     }
 
     @Override
     public CategoryDto findById(String id) {
-        String sql = String.format("SELECT id, name FROM category WHERE id = '%s';", id);
         CategoryDto categoryDto;
         try {
-            categoryDto = jdbcTemplate.queryForObject(sql,
+            categoryDto = namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_SQL,
+                    new MapSqlParameterSource(ID_PARAMETER, id),
                     new BeanPropertyRowMapper<>(CategoryDto.class)
             );
         }
-        // Don't found any Category with id
         catch (IncorrectResultSizeDataAccessException exception) {
+            LOGGER.debug("No category found for request id: {}", id);
+            LOGGER.trace(exception.getMessage());
             return null;
         }
-        // Has any problem executing the query
         catch (DataAccessException exception) {
-            logger.error(exception.getMessage());
+            LOGGER.error(exception.getMessage());
             throw new DatabaseException(ErrorMessages.DATABASE_HAS_A_PROBLEM.getMessage());
         }
         return categoryDto;

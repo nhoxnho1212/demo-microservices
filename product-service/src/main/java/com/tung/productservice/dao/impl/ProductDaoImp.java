@@ -38,7 +38,7 @@ public class ProductDaoImp implements ProductDao {
     private static final String LIMIT_PARAMETER = "limit";
     private static final String STARTED_AT_PARAMETER = "startedAt";
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     public ProductDaoImp(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
