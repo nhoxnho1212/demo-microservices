@@ -14,27 +14,27 @@ public class CaffeineCacheConfig {
 
     @Bean
     @Primary
-    public CacheManager CategoryCacheManager() {
+    public CacheManager categoryCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager("CATEGORY");
         cacheManager.setAllowNullValues(false);
-        cacheManager.setCaffeine(CategoryCaffeineCacheBuilder());
+        cacheManager.setCaffeine(categoryCaffeineCacheBuilder());
         return  cacheManager;
     }
 
     @Bean
-    public CacheManager SearchCacheManager() {
+    public CacheManager searchCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager("SEARCH");
         cacheManager.setAllowNullValues(false);
-        cacheManager.setCaffeine(SearchCaffeineCacheBuilder());
+        cacheManager.setCaffeine(searchCaffeineCacheBuilder());
         return  cacheManager;
     }
 
-    private Caffeine<Object, Object> CategoryCaffeineCacheBuilder() {
+    private Caffeine<Object, Object> categoryCaffeineCacheBuilder() {
         return Caffeine.newBuilder()
                 .expireAfterAccess(60, TimeUnit.SECONDS);
     }
 
-    private Caffeine<Object, Object> SearchCaffeineCacheBuilder() {
+    private Caffeine<Object, Object> searchCaffeineCacheBuilder() {
         return Caffeine.newBuilder()
                 .maximumSize(1000000000)
                 .expireAfterAccess(60, TimeUnit.SECONDS);
