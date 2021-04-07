@@ -25,16 +25,16 @@ public class ProductDaoImp implements ProductDao {
 
     private static final String FIND_ALL_PRODUCTS_SQL = "SELECT id, name, price, category FROM product ORDER BY id DESC";
     private static final String FIND_BY_NAME_SQL = "SELECT * FROM product WHERE name like :name";
-    private static final String FIND_AND_PAGING_PRODUCT_SQL = "SELECT * FROM product " +
-            "WHERE %s name LIKE :name " +
-            "ORDER BY :sortColumn :sortDirection " +
+    private static final String FIND_AND_PAGING_PRODUCT_SQL = "SELECT p.id, p.name, p.price, p.category " +
+            "FROM product p " +
+            "left join category c on p.category = c.id " +
+            "WHERE %s p.name LIKE :name " +
+            "ORDER BY %s %s " +
             "LIMIT :limit " +
             "OFFSET :startedAt";
     private static final String NUMBER_OF_PRODUCT_SEARCHING_SQL ="SELECT COUNT(*) FROM product WHERE %s name LIKE :name";
 
     private static final String NAME_PARAMETER = "name";
-    private static final String SORT_COLUMN_PARAMETER = "sortColumn";
-    private static final String SORT_DIRECTION_PARAMETER = "sortDirection";
     private static final String LIMIT_PARAMETER = "limit";
     private static final String STARTED_AT_PARAMETER = "startedAt";
 
@@ -86,30 +86,34 @@ public class ProductDaoImp implements ProductDao {
     @Override
     public Page<ProductDto> findAndPaging(ProductPagingRequest productPagingRequest) {
         final String searchPattern = "%" + productPagingRequest.getName() + "%";
-        String columnName = "id";
+        String columnName = "p.id";
         Direction direction = Direction.asc;
         Integer total = 0;
         String conditionCategory =  "";
 
         if (productPagingRequest.getOrder().size() > 0) {
-            columnName = productPagingRequest.getOrder().get(0).getColumnName();
+            if (productPagingRequest.getOrder().get(0).getColumnName().equals("category")) {
+                columnName = "c.name";
+            }
+            else  {
+                columnName = "p." + productPagingRequest.getOrder().get(0).getColumnName();
+            }
+
             direction = productPagingRequest.getOrder().get(0).getDir();
         }
 
         if (productPagingRequest.getCategory().size() > 0) {
-            conditionCategory = String.format("LOCATE(category, '%s') > 0 AND", productPagingRequest.getCategory().toString());
+            conditionCategory = String.format("LOCATE(p.category, '%s') > 0 AND", productPagingRequest.getCategory().toString());
         }
 
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue(NAME_PARAMETER, searchPattern);
-        param.addValue(SORT_COLUMN_PARAMETER, columnName);
-        param.addValue(SORT_DIRECTION_PARAMETER, direction.name());
         param.addValue(LIMIT_PARAMETER, productPagingRequest.getLength());
         param.addValue(STARTED_AT_PARAMETER, productPagingRequest.getStart());
 
         List<ProductDto> resultQuery;
-        String query = String.format(FIND_AND_PAGING_PRODUCT_SQL, conditionCategory);
-        String queryTotal = String.format(NUMBER_OF_PRODUCT_SEARCHING_SQL, conditionCategory);
+        String query = String.format(FIND_AND_PAGING_PRODUCT_SQL, conditionCategory, columnName, direction.name());
+        String queryTotal = String.format(NUMBER_OF_PRODUCT_SEARCHING_SQL, conditionCategory, columnName, direction.name());
 
         try {
             resultQuery =  namedParameterJdbcTemplate.query(query, param,
