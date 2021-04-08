@@ -1,40 +1,30 @@
-(function ($) {
+var OrderModal = (function ($) {
     'use strict';
-    $.widget('custom.OrderModal', {
-        options: {
-            productStore: {},
-            toastrConfig: {
-                "closeButton": true,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-bottom-right",
-                "onclick": null,
-            },
+
+    var defaltConfig = {}
+
+    function OrderModal(config) {
+        this._$ = $({});
+        this._conf = $.extend(defaltConfig, config);
+    }
+
+    $.extend(OrderModal.prototype, {
+        _showToastrOrderSuccess: function () {
+            toastr.success("Thank you for your purchase", "Order", this._conf.toastrConfig);
         },
 
-        _create: function () {
-            var productStore = this._getProductStore();
-
-            productStore.on("modal:showDialogOrderSuccess", this._onShowDialogOrderSuccess.bind(this));
-            productStore.on("modal:show", this._onShow.bind(this));
-        },
-
-        _onShowDialogOrderSuccess: function () {
-            var toastrConfig = this._getToastrConfig();
-            toastr.success("Thank you for your purchase", "Order", toastrConfig);
-        },
-
-        _onShow: function () {
+        showModal: function (html, table) {
             var _this = this;
-            var modal = bootbox.dialog({
-                message: _this.element.html(),
+            var modalCart = bootbox.dialog({
+                message: html,
                 title: "Order",
                 buttons: [
                     {
                         label: "Order",
                         className: 'btn btn-primary btn-reset-cart',
                         callback: function () {
-                            _this._getProductStore().resetCart();
+                            _this._conf.productStore.resetCart();
+                            _this._showToastrOrderSuccess();
                         }
                     },
                     {
@@ -47,18 +37,12 @@
                 ],
                 show: false,
                 onEscape: function () {
-                   this.modal("hide")
+                    this.modal("hide")
                 },
             });
-            modal.modal("show");
-        },
-
-        _getProductStore: function () {
-            return this.options.productStore;
-        },
-
-        _getToastrConfig: function () {
-            return this.options.toastrConfig;
-        },
+            modalCart.modal("show");
+        }
     });
+
+    return OrderModal;
 })(jQuery)

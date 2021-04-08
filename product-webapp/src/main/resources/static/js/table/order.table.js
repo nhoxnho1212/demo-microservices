@@ -24,7 +24,7 @@
 
         _initTable: function () {
             this.datatable = this.element.DataTable({
-                searching: true,
+                searching: false,
                 columns: this._getColumnsConfig(),
                 language: {
                     emptyTable: 'No products ordered !'

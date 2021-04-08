@@ -26,7 +26,6 @@ var ProductStore = (function($) {
         },
 
         resetCart: function () {
-            this._$.trigger('modal:showDialogOrderSuccess');
             this._$.trigger('order:cleared');
             this._conf.orderData = [];
             this._conf.numberOfOrderProduct = 0;
@@ -57,9 +56,6 @@ var ProductStore = (function($) {
             this._$.trigger('order:loaded', { data: this._conf.orderData });
         },
 
-        showModal: function () {
-            this._$.trigger('modal:show');
-        },
     });
 
     return ProductStore;
