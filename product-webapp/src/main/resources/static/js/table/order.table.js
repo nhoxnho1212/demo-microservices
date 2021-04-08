@@ -25,25 +25,24 @@
         _initTable: function () {
             this.datatable = this.element.DataTable({
                 searching: true,
-                columnDefs: [
-                    {
-                        "targets": [0, 3],
-                        "visible": false,
-                    }
-                ],
-                columns: [
-                    {title: 'id', data: 'id'},
-                    {title: 'Name', data: 'name'},
-                    {title: 'Category', data: 'category.name'},
-                    {title: 'CategoryId', data: 'category.id'},
-                    {title: 'Price', data: 'price'},
-                    {title: 'Quantity', data: 'quantity'},
-                ],
+                columns: this._getColumnsConfig(),
                 language: {
-                    'emptyTable': 'No products ordered !'
+                    emptyTable: 'No products ordered !'
                 }
             });
         },
+
+        _getColumnsConfig: function () {
+            return [
+                {title: 'id', data: 'id', visible: false},
+                {title: 'Name', data: 'name'},
+                {title: 'Category', data: 'category.name'},
+                {title: 'CategoryId', data: 'category.id', visible: false},
+                {title: 'Price', data: 'price'},
+                {title: 'Quantity', data: 'quantity'},
+            ]
+        },
+
         _getProductStore: function () {
             return this.options.productStore;
         }

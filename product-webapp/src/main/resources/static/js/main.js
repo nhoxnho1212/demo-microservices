@@ -1,8 +1,5 @@
 const SEARCH_URL = '/product/searchAndPaging',
-    SEARCH_URL_METHOD = 'post';
-
-var productsStore = {},
-    categories = {},
+    SEARCH_URL_METHOD = 'post',
     $cartCountTxt = $('#cartCount'),
     $selectCategory = $('#selectCategory'),
     $tableProducts = $('#tableProducts'),
@@ -10,15 +7,19 @@ var productsStore = {},
     $inputSearchProduct = $("#inputSearchProduct"),
     $modalAddCartContent = $('#modalAddCartContent'),
     $btnSearchProduct = $("#btnSearchProduct"),
-    $btnOrder = $('.btn-order');
+    $btnOrder = $('.btn-order'),
+    $txtTotalPrice = $('#txtTotalPrice');
+
+var productsStore = {};
 
 function setupComponents() {
-    productsStore = new ProductStore({cartCountTxt: $cartCountTxt});
+    productsStore = new ProductStore({cartCountTxt: $cartCountTxt, txtTotalPrice: $txtTotalPrice});
 
     var defaultOptions = {
         productStore: productsStore
     };
 
+    $txtTotalPrice.text(0);
     $selectCategory.select2();
     $tableProducts.ProductTable(_.extend({
         searchName: $inputSearchProduct.val(),

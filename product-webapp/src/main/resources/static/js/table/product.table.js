@@ -31,11 +31,7 @@
         },
 
         _onAddToCart: function (event, currentRow) {
-            let productAdded = this.datatable.row(currentRow).data();
-            let isExisted = false;
-            let listProductsOrder = this.datatable.rows().data().toArray();
-            console.log(productAdded);
-            return productAdded;
+            return this.datatable.row(currentRow).data();
         },
 
         _initProductTable: function () {
