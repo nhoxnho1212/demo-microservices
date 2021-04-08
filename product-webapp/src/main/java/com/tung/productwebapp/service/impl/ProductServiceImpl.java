@@ -40,8 +40,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private List<Product> convertProductsRequestToProducts(List<ProductRequest> productsRequest) {
-        List<Category> categoryList = categoryClient.getAll();
+        List<Category> categoryList;
         List<Product> productList = new ArrayList<>();
+
+        try {
+            categoryList = categoryClient.getAll();
+        } catch (Exception exception) {
+            categoryList = new ArrayList<>();
+            LOGGER.error(exception.getMessage());
+        }
 
         Map<String, Category> categories = categoryList.stream().collect(Collectors.toMap(Category::getId, Function.identity()));
 
@@ -59,7 +66,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getByName(String name) {
-        List<ProductRequest> productListResponse =  productClient.findByName(name);
+        List<ProductRequest> productListResponse;
+        try {
+            productListResponse = productClient.findByName(name);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            productListResponse = new ArrayList<>();
+        }
 
         List<Product> productList = convertProductsRequestToProducts(productListResponse);
 
@@ -69,7 +82,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable(key = "{#request.toString()}")
     public Page<Product> searchAndPaging(SearchAndPagingProductRequest request) {
-        Page<ProductRequest> response = productClient.searchAndPaging(request);
+        Page<ProductRequest> response;
+        try {
+            response = productClient.searchAndPaging(request);
+        } catch (Exception exception) {
+            LOGGER.error(exception.getMessage());
+            response = new Page<>(new ArrayList<>(), 0);
+        }
 
         List<Product> productList = convertProductsRequestToProducts(response.getData());
 

@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +32,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Cacheable
     public List<Category> getAll() {
-        return categoryClient.getAll();
+
+        try {
+            return categoryClient.getAll();
+        }
+        catch (Exception exception) {
+            LOGGER.error(exception.getMessage());
+            return new ArrayList<>();
+        }
+
     }
 }
