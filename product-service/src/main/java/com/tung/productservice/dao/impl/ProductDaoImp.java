@@ -32,7 +32,7 @@ public class ProductDaoImp implements ProductDao {
             "ORDER BY %s %s " +
             "LIMIT :limit " +
             "OFFSET :startedAt";
-    private static final String NUMBER_OF_PRODUCT_SEARCHING_SQL ="SELECT COUNT(*) FROM product WHERE %s name LIKE :name";
+    private static final String NUMBER_OF_PRODUCT_SEARCHING_SQL ="SELECT COUNT(*) FROM product p WHERE %s p.name LIKE :name";
 
     private static final String NAME_PARAMETER = "name";
     private static final String LIMIT_PARAMETER = "limit";
