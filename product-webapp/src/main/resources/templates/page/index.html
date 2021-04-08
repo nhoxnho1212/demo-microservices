@@ -9,6 +9,8 @@
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" />
+
     <!-- Bootstrap CSS -->
     <link
             rel="stylesheet"
@@ -120,8 +122,10 @@
 ></script>
 
 <!-- Jquery -->
-<script src="./lib/jquery/jquery-3.6.0.js" th:src="@{/lib/jquery/jquery-3.6.0.js}"
+<script th:src="@{/lib/jquery/jquery-3.6.0.js}"
 ></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
 
 <!-- Select2 -->
 <script th:src="@{/lib/select2/js/select2.min.js}"></script>
@@ -135,13 +139,13 @@
 <!-- Toastr -->
 <script th:src="@{/lib/toastr/toastr.min.js}"></script>
 
-<script th:src="@{/js/productTable.js}"></script>
+<!-- lodash-->
+<script th:src="@{/lib/lodash/lodash.js}"></script>
 
-<script th:src="@{/js/categoriesSelection.js}"></script>
-
-<script th:src ="@{/js/searchProducts.js}"></script>
-
-<script th:src ="@{/js/modalCart.js}"></script>
+<script th:src ="@{/js/store/product.store.js}"></script>
+<script th:src ="@{/js/table/product.table.js}"></script>
+<script th:src ="@{/js/table/order.table.js}"></script>
+<script th:src ="@{/js/modal/order.modal.js}"></script>
 
 <script src="./js/main.js" th:src="@{/js/main.js}"></script>
 
