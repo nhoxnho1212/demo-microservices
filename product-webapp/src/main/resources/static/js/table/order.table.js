@@ -43,6 +43,11 @@
             ]
         },
 
+        _destroy: function () {
+            this.datatable.clear();
+            this.datatable.destroy();
+        },
+
         _getProductStore: function () {
             return this.options.productStore;
         }

@@ -39,7 +39,6 @@ function setupComponents() {
 
 }
 
-
 function countNumberOfCartProducts() {
     $cartCountTxt.text(function (i, oldText) {
         return 1 + Number(oldText);
@@ -70,7 +69,6 @@ function registerButtonSearchEvent() {
 function registerButtonOrderEvent() {
     $btnOrder.on('click', function () {
         orderModal.showModal($modalAddCartContent.html(), $tableProductsOrder);
-        $tableProductsOrder.OrderTable("getProductTable");
     });
 }
 

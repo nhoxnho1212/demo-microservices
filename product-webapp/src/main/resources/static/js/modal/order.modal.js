@@ -15,7 +15,7 @@ var OrderModal = (function ($) {
 
         showModal: function (html, table) {
             var _this = this;
-            var modalCart = bootbox.dialog({
+            _this.modalCart = bootbox.dialog({
                 message: html,
                 title: "Order",
                 buttons: [
@@ -40,7 +40,11 @@ var OrderModal = (function ($) {
                     this.modal("hide")
                 },
             });
-            modalCart.modal("show");
+            _this.modalCart.modal("show");
+        },
+
+        getModalCart: function () {
+            return this.modalCart;
         }
     });
 
