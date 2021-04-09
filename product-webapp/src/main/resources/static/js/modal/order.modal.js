@@ -13,7 +13,7 @@ var OrderModal = (function ($) {
             toastr.success("Thank you for your purchase", "Order", this._conf.toastrConfig);
         },
 
-        showModal: function (html, table) {
+        showModal: function (html) {
             var _this = this;
             _this.modalCart = bootbox.dialog({
                 message: html,

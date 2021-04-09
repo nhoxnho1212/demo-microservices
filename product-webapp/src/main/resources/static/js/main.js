@@ -68,7 +68,7 @@ function registerButtonSearchEvent() {
 
 function registerButtonOrderEvent() {
     $btnOrder.on('click', function () {
-        orderModal.showModal($modalAddCartContent.html(), $tableProductsOrder);
+        orderModal.showModal($modalAddCartContent.html());
     });
 }
 
