@@ -15,7 +15,6 @@
 
             productStore.on('data:loaded', this._onDataLoaded.bind(this));
             productStore.on('data:reloaded', this._onDataReloaded.bind(this));
-            productStore.on('data:addToCart', this._onAddToCart.bind(this));
         },
 
         _onDataLoaded: function (event, data) {
@@ -28,10 +27,6 @@
             this.datatable.clear();
             this.datatable.ajax.reload();
             event.datatable = this.datatable;
-        },
-
-        _onAddToCart: function (event, currentRow) {
-            return this.datatable.row(currentRow).data();
         },
 
         _initProductTable: function () {

@@ -74,7 +74,8 @@ function registerButtonOrderEvent() {
 
 function registerButtonAddProductToCartEvent() {
     $tableProducts.on('click', '.btn-add-product-cart', function () {
-        productsStore.addProductToCart($(this).parents('tr'));
+        var productAdded = $tableProducts.ProductTable("getTable").row($(this).parents('tr')).data();
+        productsStore.addProductToCart(productAdded);
         countNumberOfCartProducts();
     })
 }

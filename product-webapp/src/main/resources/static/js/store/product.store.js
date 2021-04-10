@@ -34,8 +34,7 @@ var ProductStore = (function($) {
             this._conf.txtTotalPrice.text(0);
         },
 
-        addProductToCart: function (currentRow) {
-            var productAdded = this._$.triggerHandler('data:addToCart', currentRow);
+        addProductToCart: function (productAdded) {
             let isExisted = false;
             this._conf.numberOfOrderProduct++;
 
