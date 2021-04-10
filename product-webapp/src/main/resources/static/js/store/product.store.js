@@ -1,15 +1,14 @@
 var ProductStore = (function($) {
     'use strict';
 
-    var defaultConfig = {
-        orderData: [],
-        numberOfOrderProduct: 0,
-        totalPrice: 0,
-    }
+    var defaultConfig = { };
 
     function ProductStore(config) {
         this._$ = $({});
         this._conf = $.extend(defaultConfig, config);
+        this._orderData = [];
+        this._numberOfOrderProduct = 0;
+        this._totalPrice = 0;
     }
 
     $.extend(ProductStore.prototype, {
@@ -27,18 +26,18 @@ var ProductStore = (function($) {
 
         resetCart: function () {
             this._$.trigger('order:cleared');
-            this._conf.orderData = [];
-            this._conf.numberOfOrderProduct = 0;
-            this._conf.totalPrice = 0;
+            this._orderData = [];
+            this._numberOfOrderProduct = 0;
+            this._totalPrice = 0;
             this._conf.cartCountTxt.text(0);
             this._conf.txtTotalPrice.text(0);
         },
 
         addProductToCart: function (productAdded) {
             let isExisted = false;
-            this._conf.numberOfOrderProduct++;
+            this._numberOfOrderProduct ++;
 
-            for (let product of this._conf.orderData) {
+            for (let product of this._orderData) {
                 if (productAdded.id === product.id) {
                     product.quantity = product.quantity == null ? 1 : product.quantity + 1;
                     isExisted = true;
@@ -48,11 +47,11 @@ var ProductStore = (function($) {
 
             if (!isExisted) {
                 productAdded.quantity = 1
-                this._conf.orderData.push(productAdded);
+                this._orderData.push(productAdded);
             }
-            this._conf.totalPrice += productAdded.price;
-            this._conf.txtTotalPrice.text(this._conf.totalPrice);
-            this._$.trigger('order:loaded', { data: this._conf.orderData });
+            this._totalPrice += productAdded.price;
+            this._conf.txtTotalPrice.text(this._totalPrice);
+            this._$.trigger('order:loaded', { data: this._orderData });
         },
 
     });
