@@ -1,52 +1,52 @@
-var OrderModal = (function ($) {
+(function ($) {
     'use strict';
 
-    var defaltConfig = {}
-
-    function OrderModal(config) {
-        this._$ = $({});
-        this._conf = $.extend(defaltConfig, config);
-    }
-
-    $.extend(OrderModal.prototype, {
-        _showToastrOrderSuccess: function () {
-            toastr.success("Thank you for your purchase", "Order", this._conf.toastrConfig);
+    $.widget('custom.OrderModal', {
+        options: {
+            productStore: {}
         },
 
-        showModal: function (html) {
+        _create: function () {
+            var productStore = this.options.productStore;
+
+            productStore.on('modal:show', this._onShowModal.bind(this));
+        },
+
+        _showToastrOrderSuccess: function () {
+            toastr.success("Thank you for your purchase", "Order", this.options.toastrConfig);
+        },
+
+        _onShowModal: function () {
             var _this = this;
             _this.modalCart = bootbox.dialog({
-                message: html,
+                message: _this.element.html(),
                 title: "Order",
-                buttons: [
-                    {
-                        label: "Order",
-                        className: 'btn btn-primary btn-reset-cart',
-                        callback: function () {
-                            _this._conf.productStore.resetCart();
-                            _this._showToastrOrderSuccess();
-                        }
-                    },
-                    {
-                        label: "Cancel",
-                        className: 'btn btn-default',
-                        callback: function () {
-                            this.modal("hide")
-                        },
-                    }
-                ],
-                show: false,
+                buttons: _this._getButtonConfig(),
+                show: true,
                 onEscape: function () {
                     this.modal("hide")
                 },
             });
-            _this.modalCart.modal("show");
         },
 
-        getModalCart: function () {
-            return this.modalCart;
-        }
-    });
 
-    return OrderModal;
-})(jQuery)
+        _getButtonConfig: function () {
+            var _this = this;
+            return [
+                {
+                    label: "Order",
+                    className: 'btn btn-primary btn-reset-cart',
+                    callback: function () {
+                        _this.options.productStore.resetCart();
+                        _this._showToastrOrderSuccess();
+                    }
+                },
+                {
+                    label: "Cancel",
+                    className: 'btn btn-default',
+                }
+            ]
+        }
+    })
+
+})(jQuery);

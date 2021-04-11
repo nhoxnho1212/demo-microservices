@@ -51,8 +51,12 @@ var ProductStore = (function($) {
             }
             this._totalPrice += productAdded.price;
             this._conf.txtTotalPrice.text(this._totalPrice);
-            this._$.trigger('order:loaded', { data: this._orderData });
         },
+
+        showModalOrder: function () {
+            this._$.trigger('order:loaded', { data: this._orderData });
+            this._$.trigger('modal:show');
+        }
 
     });
 

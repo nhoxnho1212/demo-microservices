@@ -11,7 +11,6 @@ const SEARCH_URL = '/product/searchAndPaging',
     $txtTotalPrice = $('#txtTotalPrice');
 
 var productsStore = {},
-    orderModal = {},
     toastrConfig = {
         "closeButton": true,
         "newestOnTop": false,
@@ -22,7 +21,6 @@ var productsStore = {},
 
 function setupComponents() {
     productsStore = new ProductStore({cartCountTxt: $cartCountTxt, txtTotalPrice: $txtTotalPrice});
-    orderModal = new OrderModal({productStore: productsStore, toastrConfig: toastrConfig})
     var defaultOptions = {
         productStore: productsStore
     };
@@ -34,6 +32,9 @@ function setupComponents() {
         searchCategories: $selectCategory.val(),
         searchUrl: SEARCH_URL,
         searchMethod: SEARCH_URL_METHOD
+    }, defaultOptions));
+    $modalAddCartContent.OrderModal(_.extend({
+        toastrConfig: toastrConfig
     }, defaultOptions));
     $tableProductsOrder.OrderTable(defaultOptions);
 
@@ -68,7 +69,7 @@ function registerButtonSearchEvent() {
 
 function registerButtonOrderEvent() {
     $btnOrder.on('click', function () {
-        orderModal.showModal($modalAddCartContent.html());
+        productsStore.showModalOrder();
     });
 }
 
